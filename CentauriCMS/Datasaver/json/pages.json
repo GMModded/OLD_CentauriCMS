@@ -1,0 +1,21 @@
+{
+    "0": {
+        "name": "Centauri Startseite",
+        "language": "de",
+        "urlmask": ["/","de"]
+    },
+    "1": {
+        "name": "Produkte",
+        "pid": "0",
+        "language": "de",
+        "urlmask": "produkte",
+
+        "languages": {
+            "en": {
+                "name": "Products",
+                "pid": "1",
+                "urlmask": "products"
+            }
+        }
+    }
+}

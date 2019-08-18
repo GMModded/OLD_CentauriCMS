@@ -1,0 +1,50 @@
+#centauricms {
+    .login {
+        .wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            .title {
+                color: $white;
+            }
+
+            form {
+                background: $white;
+                padding: 45px 30px;
+                border-radius: 5px;
+                box-shadow: 0 0 15px rgba(0, 0, 0, .9);
+
+                .input-group {
+                    input {
+                        border-top-right-radius: 5px;
+                        border-bottom-right-radius: 5px;
+                        height: 45px;
+                    }
+                }
+
+                .bottom {
+                    .input-group {
+                        height: 100%;
+                        margin-bottom: 0;
+
+                        &.centauri-dropdown {
+                            margin-right: 15px;
+                        }
+                    }
+    
+                    input {
+                        &[type="submit"] {
+                            height: 100%;
+                            color: $white;
+                            border: none;
+                            outline: none;
+                            z-index: 1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,4 @@
+Centauri.init.login = function() {
+    
+};
+

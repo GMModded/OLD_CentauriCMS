@@ -1,0 +1,13 @@
+$midblack: #0a0a0a;
+$black: #000;
+$blackblue: #14142c;
+
+$white: #fff;
+
+$gold: gold;
+
+.centauri-colors {
+    &.bg-blackblue {
+        background-color: $blackblue;
+    }
+}

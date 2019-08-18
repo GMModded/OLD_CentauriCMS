@@ -1,0 +1,53 @@
+{
+    "web": {
+        "name": "centauri/dashboard.web.title",
+        "icon": "fas fa-sitemap",
+
+        "items": {
+            "home": {
+                "label": "centauri/dashboard.web.home",
+                "icon": "fas fa-home"
+            },
+            "pages": {
+                "label": "centauri/dashboard.web.pages",
+                "icon": "fas fa-file"
+            },
+            "list": {
+                "label": "centauri/dashboard.web.list",
+                "icon": "fas fa-list"
+            }
+        }
+    },
+
+    "file": {
+        "name": "centauri/dashboard.file.title",
+        "icon": "fas fa-image",
+
+        "items": {
+            "filelist": {
+                "label": "centauri/dashboard.file.filelist",
+                "icon": "fas fa-cloud-upload-alt"
+            }
+        }
+    },
+
+    "system": {
+        "name": "centauri/dashboard.system.title",
+        "icon": "fas fa-server",
+
+        "items": {
+            "update": {
+                "label": "centauri/dashboard.system.update",
+                "icon": "fas fa-upload"
+            },
+            "extensions": {
+                "label": "centauri/dashboard.system.extensions",
+                "icon": "fas fa-boxes"
+            },
+            "beusers": {
+                "label": "centauri/dashboard.system.beusers",
+                "icon": "fas fa-users"
+            }
+        }
+    }
+}
