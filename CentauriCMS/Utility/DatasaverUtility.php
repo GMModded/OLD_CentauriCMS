@@ -24,9 +24,10 @@ class DatasaverUtility {
             $page = $data["page"];
             if(is_null($page)) return;
 
-            $json = json_decode(file_get_contents($uri . "/CentauriCMS/Datasaver/json/$type.json"), $returnArray);
-            if(!isset($json[$page["uid"]])) return [];
-            return $json[$page["uid"]];
+            $jsonObj = json_decode(file_get_contents($uri . "/CentauriCMS/Datasaver/json/$type.json"), $returnArray);
+
+            if(!isset($data["uid"]) || !isset($jsonObj[$data["uid"]])) return NULL;
+            return $jsonObj[$data["uid"]];
         }
 
         return json_decode(file_get_contents($uri . "/CentauriCMS/Datasaver/json/$type.json"), $returnArray);

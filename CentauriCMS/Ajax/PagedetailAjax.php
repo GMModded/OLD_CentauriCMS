@@ -16,8 +16,11 @@ class PagedetailAjax {
         $pageComponent = new \CentauriCMS\Centauri\Component\PageComponent;
         $page = $pageComponent->findByUid($uid);
 
+        $elements = $datasaverUtility->findByType("elements", ["page" => $page, "uid" => $uid]);
+
         return view("Backend.Partials.pagedetail", [
-            "page" => $page
+            "page" => $page,
+            "elements" => $elements
         ]);
     }
 }

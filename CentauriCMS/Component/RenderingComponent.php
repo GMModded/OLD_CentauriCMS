@@ -3,7 +3,7 @@
 namespace CentauriCMS\Centauri\Component;
 
 class RenderingComponent {
-    public function frontendRender($elements) {
+    public function renderFrontend($elements) {
         foreach($elements as $uid => $element) {
             $element["uid"] = $uid;
 
@@ -12,5 +12,9 @@ class RenderingComponent {
 
             echo view("Frontend.Templates.$ctype", ["data" => $data]);
         }
+    }
+
+    public function renderBackend($elements) {
+        dd($elements);
     }
 }

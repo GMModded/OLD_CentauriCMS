@@ -6,6 +6,12 @@
                 "ce_header": "willkommen auf centauri cms !",
                 "ce_subheader": "lmao xD"
             }
+        },
+        "1": {
+            "ctype": "subheader",
+            "data": {
+                "ce_subheader": "easy-to-use. fast. extendable."
+            }
         }
     },
     "1": {

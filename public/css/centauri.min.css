@@ -7283,14 +7283,21 @@ form .input-group {
         border: 1px solid #000; }
   #centauricms section#content .row {
     height: calc(100vh - 160px); }
-    #centauricms section#content .row #pagetree {
-      position: relative;
-      background-color: #14142c;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-      width: 350px;
-      margin-right: 30px;
-      padding: 15px; }
+    #centauricms section#content .row #pagetree,
     #centauricms section#content .row #maincontent {
       background-color: #14142c;
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-      padding: 15px; }
+      padding: 15px;
+      height: 100%;
+      overflow-y: auto; }
+    #centauricms section#content .row #pagetree {
+      position: relative;
+      width: 350px;
+      margin-right: 30px; }
+    #centauricms section#content .row #maincontent .page-detail .contentelement {
+      padding: 15px 10px;
+      border: 1px solid #fff; }
+      #centauricms section#content .row #maincontent .page-detail .contentelement:not(:last-child) {
+        margin-bottom: 15px; }
+      #centauricms section#content .row #maincontent .page-detail .contentelement p {
+        margin-bottom: 0; }

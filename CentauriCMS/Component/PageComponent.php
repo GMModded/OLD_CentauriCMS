@@ -60,7 +60,7 @@ class PageComponent {
             $languageUtility->updateLanguage($request, explode("/", $uri)[0]);
 
             $pages = $datasaverUtility->findByType("pages");
-            $page = $this->getPage($uri);
+            $page = $this->findByUri($uri);
 
             // Condition to catch "404"-page requests -> which ain't fit to the requested URI from the client
             if(is_null($page)) {
@@ -79,10 +79,14 @@ class PageComponent {
                 return $page;
             }
 
-            $elements = $datasaverUtility->findByType("elements", ["page" => $page]);
+            $uid = $page["uid"];
+            $elements = $datasaverUtility->findByType("elements", [
+                "page" => $page,
+                "uid" => $uid
+            ]);
 
             $renderingComponent = new \CentauriCMS\Centauri\Component\RenderingComponent;
-            return $renderingComponent->frontendRender($elements);
+            return $renderingComponent->renderFrontend($elements);
         }
     }
 
@@ -94,7 +98,7 @@ class PageComponent {
      * 
      * @return NULL|array
      */
-    public function getPage($uri) {
+    public function findByUri($uri) {
         $config = \CentauriCMS\Centauri\Utility\ConfigUtility::get();
         $iCC = $config["web"]["requests"]["urlMasks"]["ignoreCamelCase"];
 
