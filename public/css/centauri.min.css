@@ -7140,11 +7140,11 @@ a {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); }
+  transform: translate(-50%, -50%);
+  transition: .3s; }
   .loader.hidden {
     opacity: 0;
-    visibility: hidden;
-    transition: .3s; }
+    visibility: hidden; }
   .loader span {
     display: inline-block;
     width: 10px;
@@ -7206,6 +7206,18 @@ form .input-group {
       form .input-group input:focus + .icon-view {
         background-color: #14142c;
         color: #fff; }
+
+.overlayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: .3s; }
+  .overlayer.hidden {
+    opacity: 0;
+    visibility: hidden; }
 
 #centauricms .login .wrapper {
   position: absolute;
@@ -7280,4 +7292,5 @@ form .input-group {
       padding: 15px; }
     #centauricms section#content .row #maincontent {
       background-color: #14142c;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); }
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+      padding: 15px; }

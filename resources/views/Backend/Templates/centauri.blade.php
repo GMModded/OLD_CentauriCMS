@@ -76,6 +76,8 @@
                 <div class="container-fluid">
                     <div class="row" style="height: calc(100vh - 160px);">
                         <div id="pagetree">
+                            <div class="overlayer"></div>
+
                             <div class="loader">
                                 <span></span>
                                 <span></span>
@@ -87,6 +89,8 @@
                         </div>
 
                         <div id="maincontent" class="col">
+                            <div class="overlayer d-none"></div>
+
                             <div class="loader d-none">
                                 <span></span>
                                 <span></span>

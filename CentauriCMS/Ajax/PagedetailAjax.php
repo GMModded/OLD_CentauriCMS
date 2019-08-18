@@ -15,7 +15,6 @@ class PagedetailAjax {
 
         $pageComponent = new \CentauriCMS\Centauri\Component\PageComponent;
         $page = $pageComponent->findByUid($uid);
-        dd($page);
 
         return view("Backend.Partials.pagedetail", [
             "page" => $page
