@@ -1,6 +1,6 @@
 {{-- {{ dd(get_defined_vars()["__data"]) }} --}}
 
-<ul id="pages" class="list-unstyled">
+<ul id="pages" class="list-group list-unstyled">
     @foreach($pages as $uid => $page)
         @if($uid == 0)
             <li data-uid="0">

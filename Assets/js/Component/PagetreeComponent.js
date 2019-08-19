@@ -5,10 +5,13 @@ Centauri.init.pagetree = function() {
         _token: Centauri.token
     }, function(data) {
         $pagetree = $("#centauricms #content #pagetree");
-
         $pagetree.find(".content").html(data);
-        $pagetree.find(".loader").addClass("hidden");
-        $pagetree.find(".overlayer").addClass("hidden");
+
+        Centauri.Utility.Loader.hide("pagetree");
+
+        $("#pages").sortable({
+            placeholder: "drop-placeholder"
+        });
 
         $pages = $pagetree.find("#pages");
         $pages.find("li").each(function() {
@@ -17,20 +20,27 @@ Centauri.init.pagetree = function() {
 
             // Page onclick event
             $page.click(function() {
-                $maincontent = $("#centauricms #content #maincontent");
-                $maincontent.find(".loader").removeClass("d-none hidden");
-                $maincontent.find(".overlayer").removeClass("d-none hidden");
+                Centauri.Utility.Loader.show("maincontent");
 
-                // AJAX-call for rendering the Pagedetail partial (editing elements or data of the page itself)
-                Centauri.Utility.ajax("Pagedetail", {
-                    _token: Centauri.token,
-                    uid: uid
-                }, function(data) {
-                    $maincontent.find(".content").html(data);
-                    $maincontent.find(".loader").addClass("hidden");
-                    $maincontent.find(".overlayer").addClass("hidden");
-                });
+                $maincontent = $("#centauricms #content #maincontent");
+                $crtModule = Centauri.current.module;
+
+                if($crtModule == "home" || $crtModule == "pages") {
+                    // AJAX-call for rendering the Pagedetail partial (editing elements or data of the page itself)
+                    Centauri.Utility.ajax("Pagedetail", {
+                        _token: Centauri.token,
+                        crtModule: $crtModule,
+                        uid: uid
+                    }, function(data) {
+                        $maincontent.find(".content").html(data);
+                        Centauri.Utility.Loader.hide("maincontent");
+                    });
+                }
             });
         });
     });
 };
+
+// $("#sortable4").sortable({
+//     placeholder: 'drop-placeholder'
+// });

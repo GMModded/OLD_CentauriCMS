@@ -17,6 +17,7 @@ return [
         "title" => "System",
         "update" => "Update",
         "extensions" => "Erweiterungen",
-        "beusers" => "Accounts"
+        "beusers" => "Accounts",
+        "languages" => "Sprachen"
     ]
 ];

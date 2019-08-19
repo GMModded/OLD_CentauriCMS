@@ -16,6 +16,7 @@ return [
     ],
 
     "header" => [
-        "logout" => "Ausloggen"
+        "logout" => "Ausloggen",
+        "clearcache" => "Cache leeren"
     ]
 ];

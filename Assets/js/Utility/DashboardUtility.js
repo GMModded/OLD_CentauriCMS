@@ -6,6 +6,11 @@ Centauri.init.dashboard = function() {
             if(!$(this).hasClass("active")) {
                 $("#centauricms #dashboard .accordion .panel li.active").removeClass("active");
                 $(this).addClass("active");
+
+                var dataModule = $(this).data("module");
+                Centauri.current.module = dataModule;
+
+                
             }
         });
     });

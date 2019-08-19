@@ -50,7 +50,7 @@ class PageComponent {
                     "data" => [
                         "_ENV" => $_ENV,
                         "token" => $sessionToken,
-                        "label" => ["state" => "Login"],
+                        "label" => ["state" => "Backend"],
                         "modules" => $modules
                     ]
                 ]);
@@ -62,6 +62,8 @@ class PageComponent {
             $pages = $datasaverUtility->findByType("pages");
             $page = $this->findByUri($uri);
 
+            dump($pages, $page);
+
             // Condition to catch "404"-page requests -> which ain't fit to the requested URI from the client
             if(is_null($page)) {
                 $config = \CentauriCMS\Centauri\Utility\ConfigUtility::get();
@@ -70,12 +72,11 @@ class PageComponent {
                 $action = $notFoundHook[1];
                 $class = $notFoundHook[0];
 
-                return call_user_func([
+                call_user_func([
                     $Centauri::makeInstance($class),
                     ucfirst($action)
                 ], $request);
 
-                dd("404");
                 return $page;
             }
 
@@ -177,12 +178,17 @@ class PageComponent {
         $Centauri = new \CentauriCMS\Centauri\Centauri;
         $nodes = explode("/", $uri);
 
-        if(in_array($nodes[0], $this->validateNodes)) {
-            $validateTokenUtility = new \CentauriCMS\Centauri\Utility\ValidateTokenUtility;
-            $validated = $validateTokenUtility->validate();
+        $filtered = false;
+        foreach($nodes as $node) {
+            if(in_array($node, $this->validateNodes)) {
+                $filtered = true;
 
-            if(!$validated) {
-                return json_encode(["error" => "Token expired."]);
+                $validateTokenUtility = new \CentauriCMS\Centauri\Utility\ValidateTokenUtility;
+                $validated = $validateTokenUtility->validate();
+    
+                if(!$validated) return json_encode(["error" => "Token expired."]);
+
+                break;
             }
         }
 
@@ -210,5 +216,28 @@ class PageComponent {
                 return false;
                 break;
         }
+    }
+
+    /**
+     * Returns the page with additional datas e.g. publicUrl or uid etc.
+     * 
+     * @param array $page
+     * 
+     * @return void
+     */
+    public function getPageDatas($page) {
+        $pathsUtility = new \CentauriCMS\Centauri\Utility\PathsUtility;
+        $rootPath = $pathsUtility->rootPath();
+
+        $segment = $page["urlmask"];
+        if(is_countable($segment) && count($segment) > 1) {
+            foreach($segment as $pathsegment) { if($pathsegment != "/") $segment = $pathsegment; }
+        }
+
+        $url = $rootPath . $segment;
+
+        $page["publicUrl"] = $url;
+
+        return $page;
     }
 }

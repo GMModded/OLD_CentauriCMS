@@ -66,29 +66,43 @@
 
             <section id="content" class="col px-4">
                 <section id="header">
-                    <a href="{{ url('action/logout?_token=' . $data['token'] . '') }}" class="btn btn-danger h-100 m-0 align-items-center p-2 float-right">
-                        <i class="fas fa-sign-out-alt"></i>
+                    <div id="tools" class="float-right">
+                        <a href="{{ url('ajax/clearcache?_token=' . $data['token'] . '') }}" class="btn btn-default btn-lg btn-default h-100 mr-2 m-0 align-items-center p-2" data-ajax="true">
+                            <i class="fas fa-bolt"></i>
+                        </a>
 
-                        @lang("centauri/messages.header.logout")
-                    </a>
+                        <a href="{{ url('action/logout?_token=' . $data['token'] . '') }}" class="btn btn-danger h-100 m-0 align-items-center p-2">
+                            <i class="fas fa-sign-out-alt"></i>
+
+                            @lang("centauri/messages.header.logout")
+                        </a>
+                    </div>
                 </section>
 
                 <div class="container-fluid">
-                    <div class="row" style="height: calc(100vh - 160px);">
-                        <div id="pagetree">
-                            <div class="overlayer"></div>
-
-                            <div class="loader">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
+                    <div class="row">
+                        <div class="left col-3 p-0 mr-4 overflow-hidden">
+                            <div id="pagetools" class="centauri-box mb-4" style="height: 50px;">
+                                <a clsas="btn-floating">
+                                    <i class="fas fa-file"></i>
+                                </a>
                             </div>
 
-                            <div class="content"></div>
+                            <div id="pagetree" class="centauri-box">
+                                <div class="overlayer"></div>
+
+                                <div class="loader">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+
+                                <div class="content"></div>
+                            </div>
                         </div>
 
-                        <div id="maincontent" class="col">
+                        <div id="maincontent" class="centauri-box col">
                             <div class="overlayer d-none"></div>
 
                             <div class="loader d-none">

@@ -7133,7 +7133,7 @@ a {
 
 #centauricms {
   height: 100vh;
-  background-image: url(/CentauriCMS/resources/fileadmin/mountains-bg.jpg);
+  background-image: url(/resources/fileadmin/mountains-bg.jpg);
   background-size: cover; }
 
 .loader {
@@ -7249,12 +7249,21 @@ form .input-group {
 
 #centauricms {
   color: #fff; }
+  #centauricms .centauri-box {
+    background-color: #14142c;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    padding: 15px;
+    height: 100%; }
+    #centauricms .centauri-box:not(#pagetools) {
+      overflow-y: auto; }
   #centauricms section#header {
     height: 75px;
     margin: 30px 0;
     padding: 15px;
     background-color: #14142c;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); }
+    #centauricms section#header #tools a {
+      text-transform: capitalize; }
   #centauricms section#dashboard {
     background-color: #14142c;
     width: 320px;
@@ -7276,24 +7285,25 @@ form .input-group {
       box-shadow: 0 0 15px #000;
       padding: 15px;
       margin-bottom: 10px;
-      border: 1px solid #1a1d24;
+      border: 1px solid #14142c;
       cursor: pointer; }
       #centauricms section#dashboard .bottom .accordion li:not(.parent).active {
-        box-shadow: inset 0 0 15px #000;
+        color: #14142c;
+        background-color: #fff;
+        font-weight: bold;
+        box-shadow: 0 0 15px #000;
         border: 1px solid #000; }
   #centauricms section#content .row {
     height: calc(100vh - 160px); }
-    #centauricms section#content .row #pagetree,
-    #centauricms section#content .row #maincontent {
-      background-color: #14142c;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-      padding: 15px;
-      height: 100%;
-      overflow-y: auto; }
-    #centauricms section#content .row #pagetree {
-      position: relative;
-      width: 350px;
-      margin-right: 30px; }
+    #centauricms section#content .row #maincontent .content {
+      height: 100%; }
+      #centauricms section#content .row #maincontent .content .home-detail {
+        height: 100%; }
+        #centauricms section#content .row #maincontent .content .home-detail iframe {
+          height: 100%;
+          width: 100%;
+          background-color: #fff;
+          border: transparent; }
     #centauricms section#content .row #maincontent .page-detail .contentelement {
       padding: 15px 10px;
       border: 1px solid #fff; }
@@ -7301,3 +7311,13 @@ form .input-group {
         margin-bottom: 15px; }
       #centauricms section#content .row #maincontent .page-detail .contentelement p {
         margin-bottom: 0; }
+
+#centauricms #pagetree .drop-placeholder {
+  background-color: #fff;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  line-height: 1.2em; }
+
+#centauricms #pagetree .ui-sortable-helper {
+  color: #14142c;
+  font-weight: bold; }

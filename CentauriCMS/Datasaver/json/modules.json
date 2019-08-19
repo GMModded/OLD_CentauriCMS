@@ -47,6 +47,10 @@
             "beusers": {
                 "label": "centauri/dashboard.system.beusers",
                 "icon": "fas fa-users"
+            },
+            "languages": {
+                "label": "centauri/dashboard.system.languages",
+                "icon": "fas fa-language"
             }
         }
     }

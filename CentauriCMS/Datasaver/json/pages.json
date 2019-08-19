@@ -2,7 +2,7 @@
     "0": {
         "name": "Centauri Startseite",
         "language": "de",
-        "urlmask": ["/","de"]
+        "urlmask": ["/", "de", "home", "startseite"]
     },
     "1": {
         "name": "Produkte",
@@ -13,7 +13,6 @@
         "languages": {
             "en": {
                 "name": "Products",
-                "pid": "1",
                 "urlmask": "products"
             }
         }
