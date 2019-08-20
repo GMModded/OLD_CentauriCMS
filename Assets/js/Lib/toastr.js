@@ -9,16 +9,18 @@
  * ARIA Support: Greta Krafsig
  *
  * Project: https://github.com/CodeSeven/toastr
- * 
- * 
- * Modified by:   M. Sediqi
- * Project:       Centauri CMS
- * 
- * 
- * Changes:
- *   + Mainly its styling
- *   + Switched the function of the title- and description-params
  */
+
+ /**
+  * Centauri CMS
+  * 
+  * Modified by:   M. Sediqi
+  * Copyright:     2019
+  * 
+  * Changes:
+  *  > Mainly its styling
+  *  > Switched the function of the title- and description-params
+  */
  
 /* global define */
 (function (define) {

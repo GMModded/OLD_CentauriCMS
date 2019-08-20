@@ -10,17 +10,17 @@ class PagedetailAjax {
         $request = Request();
 
         $sessionToken = $request->session()->get("_token");
-        $uid = $request->input("uid");
+        $pid = $request->input("pid");
         $crtModule = $request->input("crtModule");
 
         $datasaverUtility = new \CentauriCMS\Centauri\Utility\DatasaverUtility;
         $pages = $datasaverUtility->findByType("pages");
 
         $pageComponent = new \CentauriCMS\Centauri\Component\PageComponent;
-        $page = $pageComponent->findByUid($uid);
+        $page = $pageComponent->findByPid($pid);
+        $page = $pageComponent->getPageDatas($page, $pid);
 
         if($crtModule == "home") {
-            $page = $pageComponent->getPageDatas($page);
             return view("Backend.Partials.home", [
                 "page" => $page,
 
@@ -31,27 +31,35 @@ class PagedetailAjax {
         }
 
         if($crtModule == "pages") {
-            $elements = $datasaverUtility->findByType("elements", ["page" => $page, "uid" => $uid]);
-            $elementsConfig = (include __DIR__ . "/../Datasaver/elementsConfig.php");
+            $cfConfig = (include __DIR__ . "/../Datasaver/CFConfig.php");
+            $elements = $datasaverUtility->findByType("elements", ["page" => $page, "pid" => $pid]);
 
-            foreach($elements as $element) {
-                $data = $element["data"];
+            $fieldsArray = [];
 
-                foreach($data as $key => $value) {
-                    $cfg = $elementsConfig[$key];
-                    $html = $cfg["html"];
+            foreach($elements as $uid => $element) {
+                $fieldsArray[$uid] = [
+                    "ctype" => $element["ctype"],
+                    "fields" => $element["fields"]
+                ];
+            }
 
-                    $html = str_replace("{VALUE}", $value, $html);
+            // dd($fieldsArray);
+            foreach($fieldsArray as $uid => $fieldArray) {
+                foreach($fieldArray["fields"] as $field => $value) {
+                    $cfg = $cfConfig[$field];
 
-                    $cfg["html"] = $html;
-                    $elementsConfig[$key] = $cfg;
+                    foreach($cfg as $key => $val) {
+                        $val = str_replace("{VALUE}", $value, $val);
+                        $cfg[$key] = $val;
+                    }
+
+                    $fieldsArray[$uid]["fields"][$field] = $cfg;
                 }
             }
 
             return view("Backend.Partials.pagedetail", [
                 "page" => $page,
-                "elements" => $elements,
-                "elementsConfig" => $elementsConfig,
+                "fieldsArray" => $fieldsArray,
 
                 "data" => [
                     "token" => $sessionToken

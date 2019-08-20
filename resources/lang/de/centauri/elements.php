@@ -2,5 +2,6 @@
 
 return [
     "header" => "Header",
-    "subheader" => "Subheader"
+    "subheader" => "Subheader",
+    "textimage" => "Text mit Bild"
 ];

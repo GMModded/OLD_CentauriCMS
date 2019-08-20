@@ -2,22 +2,24 @@
     "0": {
         "0": {
             "ctype": "header",
-            "data": {
+            "fields": {
                 "ce_header": "willkommen auf centauri cms !",
                 "ce_subheader": "lmao xD"
             }
         },
         "1": {
-            "ctype": "subheader",
-            "data": {
-                "ce_subheader": "easy-to-use. fast. extendable."
+            "ctype": "textimage",
+            "fields": {
+                "ce_image": "http://centauri.msediqi.lan/resources/fileadmin/mountains-bg.jpg",
+                "ce_header": "Centauri CMS",
+                "ce_subheader": "blaaaa"
             }
         }
     },
     "1": {
         "0": {
             "ctype": "header",
-            "data": {
+            "fields": {
                 "ce_header": "Unsere Produkte",
                 "ce_subheader": "Sehen Sie hier unsere auswahl an Produkten und Dienstleistungen!"
             }

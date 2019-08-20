@@ -67,7 +67,7 @@
             <section id="content" class="col px-4">
                 <section id="header">
                     <div id="tools" class="float-right">
-                        <a href="{{ url('ajax/clearcache?_token=' . $data['token'] . '') }}" class="btn btn-default btn-lg btn-default h-100 mr-2 m-0 align-items-center p-2" data-ajax="true">
+                        <a href="{{ url('ajax/clearcache?_token=' . $data['token'] . '') }}" class="btn btn-success px-3 py-2" data-ajax="true">
                             <i class="fas fa-bolt"></i>
                         </a>
 
@@ -80,7 +80,7 @@
                 </section>
 
                 <div class="container-fluid">
-                    <div class="row">
+                    <div class="row main-row">
                         <div class="left col-3 p-0 mr-4 overflow-hidden">
                             <div id="pagetools" class="centauri-box mb-4" style="height: 50px;">
                                 <a clsas="btn-floating">

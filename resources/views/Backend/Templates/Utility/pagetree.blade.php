@@ -1,9 +1,9 @@
 {{-- {{ dd(get_defined_vars()["__data"]) }} --}}
 
 <ul id="pages" class="list-group list-unstyled">
-    @foreach($pages as $uid => $page)
-        @if($uid == 0)
-            <li data-uid="0">
+    @foreach($pages as $pid => $page)
+        @if($pid == 0)
+            <li data-pid="0" class="root">
                 <i class="fas fa-globe mr-2"></i>
 
                 <span>
@@ -11,7 +11,7 @@
                 </span>
             </li>
         @else
-            <li data-uid="{{ $uid }}">
+            <li data-pid="{{ $pid }}">
                 <i class="fas fa-file mr-2"></i>
 
                 <span>

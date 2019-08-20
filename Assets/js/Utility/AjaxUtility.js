@@ -1,4 +1,4 @@
-Centauri.Utility.ajax = function(ajax, data, cb) {
+Centauri.Utility.Ajax = function(ajax, data, cb) {
     var url = "/ajax/" + ajax;
 
     /**

@@ -62,8 +62,6 @@ class PageComponent {
             $pages = $datasaverUtility->findByType("pages");
             $page = $this->findByUri($uri);
 
-            dump($pages, $page);
-
             // Condition to catch "404"-page requests -> which ain't fit to the requested URI from the client
             if(is_null($page)) {
                 $config = \CentauriCMS\Centauri\Utility\ConfigUtility::get();
@@ -151,17 +149,17 @@ class PageComponent {
     }
 
     /**
-     * Finds a page from the pages.json array by its uid
+     * Finds a page from the pages.json array by its pid
      * 
-     * @param int|string $uid
+     * @param int|string $pid
      * 
      * @return array|null
      */
-    public function findByUid($uid) {
+    public function findByPid($pid) {
         $datasaverUtility = new \CentauriCMS\Centauri\Utility\DatasaverUtility;
         $pages = $datasaverUtility->findByType("pages");
 
-        $page = isset($pages[$uid]) ? $pages[$uid] : NULL;
+        $page = isset($pages[$pid]) ? $pages[$pid] : NULL;
         return $page;
     }
 
@@ -222,10 +220,11 @@ class PageComponent {
      * Returns the page with additional datas e.g. publicUrl or uid etc.
      * 
      * @param array $page
+     * @param null|int|string $pid
      * 
      * @return void
      */
-    public function getPageDatas($page) {
+    public function getPageDatas($page, $pid = null) {
         $pathsUtility = new \CentauriCMS\Centauri\Utility\PathsUtility;
         $rootPath = $pathsUtility->rootPath();
 
@@ -237,6 +236,7 @@ class PageComponent {
         $url = $rootPath . $segment;
 
         $page["publicUrl"] = $url;
+        $page["pid"] = $pid;
 
         return $page;
     }

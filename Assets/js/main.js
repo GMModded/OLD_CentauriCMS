@@ -4,6 +4,7 @@
 var Centauri = {};
     Centauri.init = {};
 
+    Centauri.Component = {};
     Centauri.Utility = {};
 
     Centauri.current = {};
@@ -16,7 +17,7 @@ var Centauri = {};
 $(document).ready(function() {
     Centauri.token = $("meta[name='_token']").attr("content");
 
-    Centauri.init.dashboard();
-    Centauri.init.pagetree();
+    Centauri.Component.Dashboard();
+    Centauri.Component.Pagetree();
 });
 

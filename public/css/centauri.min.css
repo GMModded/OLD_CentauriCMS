@@ -7293,23 +7293,23 @@ form .input-group {
         font-weight: bold;
         box-shadow: 0 0 15px #000;
         border: 1px solid #000; }
-  #centauricms section#content .row {
+  #centauricms section#content .row.main-row {
     height: calc(100vh - 160px); }
-    #centauricms section#content .row #maincontent .content {
+    #centauricms section#content .row.main-row #maincontent .content {
       height: 100%; }
-      #centauricms section#content .row #maincontent .content .home-detail {
+      #centauricms section#content .row.main-row #maincontent .content .home-detail {
         height: 100%; }
-        #centauricms section#content .row #maincontent .content .home-detail iframe {
+        #centauricms section#content .row.main-row #maincontent .content .home-detail iframe {
           height: 100%;
           width: 100%;
           background-color: #fff;
           border: transparent; }
-    #centauricms section#content .row #maincontent .page-detail .contentelement {
+    #centauricms section#content .row.main-row #maincontent .page-detail .contentelement {
       padding: 15px 10px;
       border: 1px solid #fff; }
-      #centauricms section#content .row #maincontent .page-detail .contentelement:not(:last-child) {
+      #centauricms section#content .row.main-row #maincontent .page-detail .contentelement:not(:last-child) {
         margin-bottom: 15px; }
-      #centauricms section#content .row #maincontent .page-detail .contentelement p {
+      #centauricms section#content .row.main-row #maincontent .page-detail .contentelement p {
         margin-bottom: 0; }
 
 #centauricms #pagetree .drop-placeholder {

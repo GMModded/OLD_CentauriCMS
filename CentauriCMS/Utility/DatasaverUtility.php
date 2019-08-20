@@ -26,8 +26,8 @@ class DatasaverUtility {
 
             $jsonObj = json_decode(file_get_contents($uri . "/CentauriCMS/Datasaver/json/$type.json"), $returnArray);
 
-            if(!isset($data["uid"]) || !isset($jsonObj[$data["uid"]])) return NULL;
-            return $jsonObj[$data["uid"]];
+            if(!isset($data["pid"]) || !isset($jsonObj[$data["pid"]])) return NULL;
+            return $jsonObj[$data["pid"]];
         }
 
         return json_decode(file_get_contents($uri . "/CentauriCMS/Datasaver/json/$type.json"), $returnArray);

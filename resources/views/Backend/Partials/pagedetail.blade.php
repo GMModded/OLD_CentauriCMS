@@ -1,58 +1,49 @@
 {{-- {{ dd(get_defined_vars()["__data"]) }} --}}
 
-<div class="page-detail">
-    <div class="top">
-        <h3>
-            {{ $page["name"] }}
-        </h3>
+<div class="page-detail" data-pid="{{ $page['pid'] }}">
+    <div class="row">
+        <div class="col">
+            <h3>
+                {{ $page["name"] }}
+            </h3>
+        </div>
 
-        <div>
-            <select name="" id="">
-                <option value="de" selected>Deutsch</option>
-                <option value="en">English</option>
-            </select>
+        <div class="col-6 text-right">
+            <a href="{{ url('ajax/pageedit?_token=' . $data['token'] . '&tool=save') }}" class="btn btn-success px-3 py-2 waves-effect waves-light" data-ajax="true">
+                <i class="fas fa-save"></i>
+            </a>
 
-            <select class="mdb-select md-form">
-                <option value="" disabled selected>
-                    Choose your option
-                </option>
-
-                <option value="" data-icon="https://mdbootstrap.com/img/Photos/Avatars/avatar-1.jpg" class="rounded-circle">
-                    example 1
-                </option>
-
-                <option value="" data-icon="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg" class="rounded-circle">
-                    example 2
-                </option>
-
-                <option value="" data-icon="https://mdbootstrap.com/img/Photos/Avatars/avatar-3.jpg" class="rounded-circle">
-                    example 3
-                </option>
-            </select>
-
-            <label class="mdb-main-label">
-                Example label
-            </label>
+            <a href="{{ url('ajax/pageedit?_token=' . $data['token'] . '&tool=delete') }}" class="btn btn-danger px-3 py-2 waves-effect waves-light" data-ajax="true">
+                <i class="fas fa-trash"></i>
+            </a>
         </div>
     </div>
 
     <hr>
 
-    @foreach($elements as $uid => $element)
-        <div class="contentelement col-12">
-            <p>
-                <strong>
-                    @lang("centauri/elements.$element[ctype]")
-                </strong>
+    @foreach($fieldsArray as $uid => $fieldArray)
+        <div class="contentelement col-12" data-uid="{{ $uid }}">
+            <div class="row">
+                <div class="col">
+                    <strong>
+                        @lang("centauri/elements.$fieldArray[ctype]")
+                    </strong>
+                </div>
 
-                <a href="{{ url('ajax/elementedit?_token=' . $data['token'] . '') }}" class="btn" data-ajax="true">
-                    <i class="fas fa-pen-alt"></i>
-                </a>
+                <div class="col text-right">
+                    <button class="btn btn-info waves-effect toggle-edit">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
 
-                @foreach($element["data"] as $ctype => $value)
-                    {!! $elementsConfig[$ctype]["html"] !!}
+            <div class="bottom" style="display: none;">
+                @foreach($fieldArray["fields"] as $ctype => $cfg)
+                    <div class="field col">
+                        {!! $cfg["html"] !!}
+                    </div>
                 @endforeach
-            </p>
+            </div>
         </div>
     @endforeach
 </div>
