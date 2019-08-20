@@ -1,18 +1,18 @@
 {
     "0": {
         "0": {
+            "ctype": "textimage",
+            "fields": {
+                "ce_image": "{BASEURL}/resources/fileadmin/mountains-bg.jpg",
+                "ce_header": "Centauri CMS",
+                "ce_subheader": "blaaaa"
+            }
+        },
+        "1": {
             "ctype": "header",
             "fields": {
                 "ce_header": "willkommen auf centauri cms !",
                 "ce_subheader": "lmao xD"
-            }
-        },
-        "1": {
-            "ctype": "textimage",
-            "fields": {
-                "ce_image": "http://centauri.msediqi.lan/resources/fileadmin/mountains-bg.jpg",
-                "ce_header": "Centauri CMS",
-                "ce_subheader": "blaaaa"
             }
         }
     },

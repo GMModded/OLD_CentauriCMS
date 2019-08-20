@@ -78,10 +78,10 @@ class PageComponent {
                 return $page;
             }
 
-            $uid = $page["uid"];
+            $pid = $page["pid"];
             $elements = $datasaverUtility->findByType("elements", [
                 "page" => $page,
-                "uid" => $uid
+                "pid" => $pid
             ]);
 
             $renderingComponent = new \CentauriCMS\Centauri\Component\RenderingComponent;
@@ -114,14 +114,14 @@ class PageComponent {
                 if($count > 1) {
                     foreach($urlmask as $um) {
                         if(strtolower($um) == strtolower($uri)) {
-                            $ipage["uid"] = "$key";
+                            $ipage["pid"] = "$key";
                             $page = $ipage;
                             break;
                         }
                     }
                 } else {
                     if(strtolower($urlmask) == strtolower($uri)) {
-                        $ipage["uid"] = "$key";
+                        $ipage["pid"] = "$key";
                         $page = $ipage;
                         break;
                     }
@@ -130,14 +130,14 @@ class PageComponent {
                 if($count > 1) {
                     foreach($urlmask as $um) {
                         if($um == $uri) {
-                            $ipage["uid"] = "$key";
+                            $ipage["pid"] = "$key";
                             $page = $ipage;
                             break;
                         }
                     }
                 } else {
                     if($urlmask == $uri) {
-                        $ipage["uid"] = "$key";
+                        $ipage["pid"] = "$key";
                         $page = $ipage;
                         break;
                     }
@@ -217,7 +217,7 @@ class PageComponent {
     }
 
     /**
-     * Returns the page with additional datas e.g. publicUrl or uid etc.
+     * Returns the page with additional datas e.g. publicUrl or pid etc.
      * 
      * @param array $page
      * @param null|int|string $pid
