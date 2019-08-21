@@ -6,11 +6,11 @@
 
 return [
     "ce_header" => [
-        "html" => "<input type='text' value='{VALUE}' class='centauri-input' />"
+        "html" => "<input type='text' name='{NAME}' value='{VALUE}' class='centauri-input' />"
     ],
 
     "ce_subheader" => [
-        "html" => "<input type='text' value='{VALUE}' class='centauri-input' />"
+        "html" => "<input type='text' name='{NAME}' value='{VALUE}' class='centauri-input' />"
     ],
 
     "ce_image" => [

@@ -43,14 +43,14 @@ class PagedetailAjax {
                 ];
             }
 
-            // dd($fieldsArray);
             foreach($fieldsArray as $uid => $fieldArray) {
                 foreach($fieldArray["fields"] as $field => $value) {
                     $cfg = $cfConfig[$field];
 
-                    foreach($cfg as $key => $val) {
-                        $val = str_replace("{VALUE}", $value, $val);
-                        $cfg[$key] = $val;
+                    foreach($cfg as $key => $txt) {
+                        $txt = str_replace("{VALUE}", $value, $txt);
+                        $txt = str_replace("{NAME}", $field, $txt);
+                        $cfg[$key] = $txt;
                     }
 
                     $fieldsArray[$uid]["fields"][$field] = $cfg;
