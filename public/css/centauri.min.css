@@ -7214,7 +7214,8 @@ form .input-group {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  transition: .3s; }
+  transition: .3s;
+  z-index: 999; }
   .overlayer.hidden {
     opacity: 0;
     visibility: hidden; }
@@ -7305,10 +7306,14 @@ form .input-group {
           background-color: #fff;
           border: transparent; }
     #centauricms section#content .row.main-row #maincontent .page-detail .contentelement {
-      padding: 15px 10px;
+      padding: 15px 15px 20px;
       border: 1px solid #fff; }
       #centauricms section#content .row.main-row #maincontent .page-detail .contentelement:not(:last-child) {
         margin-bottom: 15px; }
+      #centauricms section#content .row.main-row #maincontent .page-detail .contentelement .top-right {
+        position: absolute;
+        top: 5px;
+        right: 5px; }
       #centauricms section#content .row.main-row #maincontent .page-detail .contentelement p {
         margin-bottom: 0; }
 

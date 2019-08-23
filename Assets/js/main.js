@@ -20,4 +20,3 @@ $(document).ready(function() {
     Centauri.Component.Dashboard();
     Centauri.Component.Pagetree();
 });
-

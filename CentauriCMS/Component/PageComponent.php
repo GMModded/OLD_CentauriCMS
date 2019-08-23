@@ -155,11 +155,18 @@ class PageComponent {
      * 
      * @return array|null
      */
-    public function findByPid($pid) {
+    public function findByPid($pid, $returnArray = true) {
         $datasaverUtility = new \CentauriCMS\Centauri\Utility\DatasaverUtility;
-        $pages = $datasaverUtility->findByType("pages");
+        $pages = $datasaverUtility->findByType("pages", [], $returnArray);
 
-        $page = isset($pages[$pid]) ? $pages[$pid] : NULL;
+        $page = NULL;
+
+        if($returnArray) {
+            $page = isset($pages[$pid]) ? $pages[$pid] : NULL;
+        } else {
+            $page = isset($pages->$pid) ? $pages->$pid : NULL;
+        }
+
         return $page;
     }
 

@@ -3,9 +3,13 @@
 <div class="page-detail" data-pid="{{ $page['pid'] }}">
     <div class="row">
         <div class="col">
-            <h3>
-                {{ $page["name"] }}
-            </h3>
+            <input type="text" id="pagetitle" value="{{ $page['name'] }}" />
+
+            @if(is_countable($page["urlmask"]))
+                <input type="text" id="pageurlmask" value="{{ implode(', ', $page['urlmask']) }}" />
+            @else
+                <input type="text" id="pageurlmask" value="{{ $page['urlmask'] }}" />
+            @endif
         </div>
 
         <div class="col-6 text-right">
@@ -27,24 +31,32 @@
 
     @foreach($fieldsArray as $uid => $fieldArray)
         <div class="contentelement col-12" data-uid="{{ $uid }}">
-            <div class="row">
+            <div class="top row">
                 <div class="col">
                     <strong>
                         @lang("centauri/elements.$fieldArray[ctype]")
                     </strong>
                 </div>
 
-                <div class="col text-right">
+                <div class="top-right">
                     <button class="btn btn-info waves-effect toggle-edit">
                         <i class="fas fa-eye"></i>
                     </button>
                 </div>
             </div>
 
-            <div class="bottom" style="display: none;">
+            <div class="bottom row" style="display: none;">
                 @foreach($fieldArray["fields"] as $ctype => $cfg)
-                    <div class="field col">
-                        {!! $cfg["html"] !!}
+                    <div class="field col-12">
+                        @if(isset($cfg["label"]))
+                            <label>
+                                {{ $cfg["label"] }}
+                            </label>
+                        @endif
+
+                        <div class="content">
+                            {!! $cfg["html"] !!}
+                        </div>
                     </div>
                 @endforeach
             </div>

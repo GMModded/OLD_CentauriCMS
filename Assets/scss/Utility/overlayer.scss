@@ -6,6 +6,7 @@
     height: 100%;
     background-color: rgba(0, 0, 0, .5);
     transition: .3s;
+    z-index: 999;
 
     &.hidden {
         opacity: 0;

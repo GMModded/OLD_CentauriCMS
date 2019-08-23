@@ -23,8 +23,14 @@ class ToastUtility {
 
         } else {
             echo "<script id='toast-script'>
-                toastr[$toastclass]($title, $description);
+                toastr['" . $toastclass . "']('" . $title . "', '" . $description . "');
             </script>";
         }
+    }
+
+    public function render($title, $description = "", $toastclass = "success") {
+        return "<script id='toast-script'>
+                    toastr['" . $toastclass . "']('" . $title . "', '" . $description . "');
+                </script>";
     }
 }
