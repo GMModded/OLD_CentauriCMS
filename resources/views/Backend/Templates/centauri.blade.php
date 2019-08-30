@@ -131,5 +131,7 @@
                 )}}
             @endif
         @endif
+
+        <script src="https://cdn.ckeditor.com/ckeditor5/12.3.1/classic/ckeditor.js"></script>
     </body>
 </html>

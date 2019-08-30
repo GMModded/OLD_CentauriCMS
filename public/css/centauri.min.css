@@ -9,6 +9,7 @@
 @import url(../../packages/@fortawesome/fontawesome-free/css/solid.min.css);
 @import url(../../packages/@fortawesome/fontawesome-free/css/brands.min.css);
 @import url(../../packages/ckeditor/contents.css);
+@import url(../../packages/cropperjs/dist/cropper.css);
 @import url("https://fonts.googleapis.com/css?family=Kaushan+Script");
 :root {
   --blue: #007bff;
@@ -7131,6 +7132,39 @@ a {
 .centauri-colors.bg-blackblue {
   background-color: #14142c; }
 
+#centauricms::-webkit-scrollbar {
+  width: 7px;
+  height: 7px; }
+
+#centauricms::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px; }
+
+#centauricms::-webkit-scrollbar-thumb {
+  background: #e1e1e1;
+  border: 0px none #000000;
+  border-radius: 50px; }
+
+#centauricms::-webkit-scrollbar-thumb:hover {
+  background: #ffffff; }
+
+#centauricms::-webkit-scrollbar-thumb:active {
+  background: #000000; }
+
+#centauricms::-webkit-scrollbar-track {
+  background: #666666;
+  border: 0px none #ffffff;
+  border-radius: 50px; }
+
+#centauricms::-webkit-scrollbar-track:hover {
+  background: #666666; }
+
+#centauricms::-webkit-scrollbar-track:active {
+  background: #333333; }
+
+#centauricms::-webkit-scrollbar-corner {
+  background: transparent; }
+
 #centauricms {
   height: 100vh;
   background-image: url(/resources/fileadmin/mountains-bg.jpg);
@@ -7141,6 +7175,7 @@ a {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 999;
   transition: .3s; }
   .loader.hidden {
     opacity: 0;
@@ -7326,3 +7361,45 @@ form .input-group {
 #centauricms #pagetree .ui-sortable-helper {
   color: #14142c;
   font-weight: bold; }
+
+.contentelement .bottom {
+  padding-top: 15px; }
+  .contentelement .bottom .field:not(:last-child) {
+    margin-bottom: 15px; }
+  .contentelement .bottom .field input {
+    width: 100%;
+    border: unset;
+    padding: 7px; }
+
+#modal-newelement .card {
+  top: -8px; }
+
+#modal-newelement .contentelement {
+  border: 1px solid #dedede;
+  box-shadow: 0 0 15px #cecece;
+  padding: 15px;
+  transition: .3s ease-in-out; }
+  #modal-newelement .contentelement:not(:last-child) {
+    margin-bottom: 15px; }
+  #modal-newelement .contentelement.active .top strong {
+    text-decoration: underline; }
+  #modal-newelement .contentelement .top strong {
+    cursor: pointer; }
+    #modal-newelement .contentelement .top strong:hover {
+      text-decoration: underline; }
+  #modal-newelement .contentelement .bottom .field input {
+    border: 1px solid #aaa; }
+
+.ck-content {
+  min-height: 100px;
+  padding-bottom: 10px !important;
+  color: #000; }
+
+.nav-tabs .nav-link {
+  transition: .3s ease-in-out; }
+  .nav-tabs .nav-link.active {
+    position: relative;
+    z-index: 1;
+    margin-top: 3px;
+    margin-bottom: -3px;
+    box-shadow: 0px -3px 10px 0 rgba(0, 0, 0, 0.16), 0px 0px 0px 0px rgba(0, 0, 0, 0.12); }

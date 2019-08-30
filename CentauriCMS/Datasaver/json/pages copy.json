@@ -4,9 +4,9 @@
         "language": "de",
         "urlmask": [
             "\/",
-            "deee",
-            "home",
-            "startseite"
+            "de",
+            "startseite",
+            "home"
         ]
     },
     {

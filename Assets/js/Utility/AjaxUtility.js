@@ -14,7 +14,11 @@ Centauri.Utility.Ajax = function(ajax, data, cb) {
         data: data,
 
         success: function(data) {
-            return cb(data);
+            if(data == '{"error":"Token expired."}') {
+                location.reload();
+            } else {
+                return cb(data);
+            }
         }
     });
 };

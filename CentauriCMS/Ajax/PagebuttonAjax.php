@@ -21,6 +21,70 @@ class PagebuttonAjax {
         $btn = $request->input("btn");
         $type = $request->input("type");
 
+        if($btn == "NEW_ELEMENT") {
+            $cfConfig = (include __DIR__ . "/../Datasaver/CFConfig.php");
+
+            $config = $cfConfig["config"];
+            $cfConfigPalettes = $cfConfig["palettes"];
+
+            $datasaverUtility = new \CentauriCMS\Centauri\Utility\DatasaverUtility;
+            $elements = $datasaverUtility->findByType("elements", [
+                "page" => $page,
+                "pid" => $pid
+            ]);
+
+            foreach($elements as $uid => $element) {
+                foreach($element["fields"] as $ctype => $value) {
+                    $palettesFields = $cfConfigPalettes[$element["ctype"]];
+
+                    foreach($palettesFields as $key => $ctypeField) {
+                        if($palettesFields[$key] == $ctypeField && isset($element["fields"][$ctypeField])) {
+                            $cfg = $config[$ctypeField];
+
+                            foreach($cfg as $cfgKey => $cfgVal) {
+                                if($cfgKey == "html") {
+                                    $html = $cfg["html"];
+
+                                    $value = $element["fields"][$ctypeField];
+                                    $name = $ctypeField;
+
+                                    $html = str_replace("{NAME}", $name, $html);
+                                    $html = str_replace("{VALUE}", "", $html);
+
+                                    $palettesFields[$ctypeField][$cfgKey] = $html;
+                                } else {
+                                    $palettesFields[$ctypeField][$cfgKey] = $cfgVal;
+                                }
+                            }
+                        }
+
+                        unset($palettesFields[$key]);
+                    }
+                }
+
+                $cfConfigPalettes[$element["ctype"]] = $palettesFields;
+                $cfConfigPalettes[$element["ctype"]]["uid"] = (int) $uid;
+            }
+
+            $tabs = $cfConfig["tabs"];
+
+            foreach($tabs as $tab => $palettes) {
+                foreach($palettes as $key => $palette) {
+                    unset($tabs[$tab][$key]);
+                    $tabs[$tab][$palette] = $cfConfigPalettes[$palette];
+                }
+            }
+
+            return view("Backend.Templates.Utility.newelement", [
+                "page" => $page,
+                "tabs" => $tabs,
+
+                "data" => [
+                    "token" => $sessionToken
+                ]
+            ]);
+        }
+
         if($btn == "SHOW_FRONTEND") {
             return $pageDatasArr["publicUrl"];
         }
@@ -48,8 +112,11 @@ class PagebuttonAjax {
                     "pid" => $pid
                 ]);
 
-                // Saving all content elements inside of elements.json
-                $elementsSaved = $this->saveElements($pid, $uid, $field, $value, $elements);
+                // Only saving when $field & $value ain't null
+                if(!is_null($field) && !is_null($value)) {
+                    // Saving all content elements inside of elements.json
+                    $elementsSaved = $this->saveElements($pid, $uid, $field, $value, $elements);
+                }
             }
 
             $toastUtility = new \CentauriCMS\Centauri\Utility\ToastUtility;
@@ -65,6 +132,10 @@ class PagebuttonAjax {
 
         if($btn == "DELETE") {
 
+        }
+
+        if($btn == "SAVE_NEW_ELEMENT") {
+            dd("hi");
         }
     }
 

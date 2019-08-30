@@ -1,20 +1,5 @@
-// Bootstrap 4
-@import "../../packages/bootstrap/scss/bootstrap";
-
-// MDBootstrap 4.x
-@import "../../packages/mdbootstrap/css/mdb.min.css";
-
-// FontAwesome 5
-@import "../../packages/@fortawesome/fontawesome-free/css/fontawesome.min.css";
-@import "../../packages/@fortawesome/fontawesome-free/css/solid.min.css";
-@import "../../packages/@fortawesome/fontawesome-free/css/brands.min.css";
-
-// Toastr
-@import "../../packages/toastr/toastr";
-
-// CKEditor
-@import "../../packages/ckeditor/contents.css";
-
+// Packages imports
+@import "packages";
 
 // Fonts
 @import url("https://fonts.googleapis.com/css?family=Kaushan+Script");
@@ -39,3 +24,11 @@
 
 // Partials
 @import "Partials/pagetree";
+@import "Partials/contentelement";
+
+// WizardModals
+@import "WizardModals/newelement";
+
+// Overrides
+@import "Overrides/ckeditor";
+@import "Overrides/mdbootstrap";

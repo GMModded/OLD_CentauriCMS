@@ -29,12 +29,16 @@
 
     <hr>
 
-    @foreach($fieldsArray as $uid => $fieldArray)
-        <div class="contentelement col-12" data-uid="{{ $uid }}">
+    <a href="{{ url('ajax/pageedit?_token=' . $data['token'] . '&tool=newelement') }}" class="btn btn-primary px-3 py-2 mb-4 ml-0 waves-effect waves-light" data-ajax="true" data-ajax-btn="newelement">
+        <i class="fas fa-plus"></i>
+    </a>
+
+    @foreach($palettes as $ctype => $palette)
+        <div class="contentelement col-12" data-uid="{{ $palette['uid'] }}">
             <div class="top row">
                 <div class="col">
                     <strong>
-                        @lang("centauri/elements.$fieldArray[ctype]")
+                        @lang("centauri/elements.$ctype")
                     </strong>
                 </div>
 
@@ -46,7 +50,7 @@
             </div>
 
             <div class="bottom row" style="display: none;">
-                @foreach($fieldArray["fields"] as $ctype => $cfg)
+                @foreach($palette as $field => $cfg)
                     <div class="field col-12">
                         @if(isset($cfg["label"]))
                             <label>
@@ -54,12 +58,18 @@
                             </label>
                         @endif
 
-                        <div class="content">
-                            {!! $cfg["html"] !!}
-                        </div>
+                        @if(isset($cfg["html"]))
+                            <div class="content">
+                                {!! $cfg["html"] !!}
+                            </div>
+                        @endif
                     </div>
                 @endforeach
             </div>
         </div>
+
+        <a href="{{ url('ajax/pageedit?_token=' . $data['token'] . '&tool=newelement') }}" class="btn btn-primary px-3 py-2 mb-4 ml-0 waves-effect waves-light" data-ajax="true" data-ajax-btn="newelement">
+            <i class="fas fa-plus"></i>
+        </a>
     @endforeach
 </div>
