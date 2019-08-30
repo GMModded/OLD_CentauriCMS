@@ -27,7 +27,20 @@ class DatasaverUtility {
             $jsonObj = json_decode(file_get_contents($uri . "/CentauriCMS/Datasaver/json/$type.json"), $returnArray);
 
             if(!isset($data["pid"]) || !isset($jsonObj[$data["pid"]])) return NULL;
-            return $jsonObj[$data["pid"]];
+
+            $elements = $jsonObj[$data["pid"]];
+            foreach($elements as $uid => $elementArray) {
+                $ctype = $elementArray["ctype"];
+                $fields = $elementArray["fields"];
+
+                foreach($fields as $field => $value) {
+                    $value = str_replace("{BASEURL}/", $uri, $value);
+                    $value = str_replace("{BASEURL}", $uri, $value);
+                    $elements[$uid]["fields"][$field] = $value;
+                }
+            }
+
+            return $elements;
         }
 
         return json_decode(file_get_contents($uri . "/CentauriCMS/Datasaver/json/$type.json"), $returnArray);

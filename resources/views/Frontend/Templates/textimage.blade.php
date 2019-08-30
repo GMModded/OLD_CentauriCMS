@@ -25,6 +25,7 @@
 
             <hr>
 
+<<<<<<< HEAD
             <p>
                 {{ $data["ce_subheader"] }}
             </p>
@@ -32,3 +33,10 @@
     </div>
 
 @endif
+=======
+        <h6>
+            {{ $data["ce_subheader"] }}
+        </h6>
+    </div>
+</div>
+>>>>>>> 29da87eb5fff280bbe53803b5c8c471c26224916

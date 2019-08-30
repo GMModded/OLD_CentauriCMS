@@ -4,11 +4,11 @@ namespace CentauriCMS\Centauri\Component;
 
 class RenderingComponent {
     public function renderFrontend($elements) {
-        foreach($elements as $uid => $fieldArray) {
-            $ctype = $fieldArray["ctype"];
-            $data = $fieldArray["fields"];
+        foreach($elements as $uid => $elementArray) {
+            $fields = $elementArray["fields"];
+            $ctype = $elementArray["ctype"];
 
-            echo view("Frontend.Templates.$ctype", ["data" => $data]);
+            echo view("Frontend.Templates.$ctype", ["data" => $fields]);
         }
     }
 
