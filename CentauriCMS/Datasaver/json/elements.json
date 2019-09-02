@@ -3,15 +3,9 @@
         "0": {
             "ctype": "textimage",
             "fields": {
-<<<<<<< HEAD
                 "ce_header": "Willkommen auf",
                 "ce_subheader": "CentauriCMS",
                 "ce_description": "<h4>Why Centauri CMS - read the <a href=\"#features\">features<\/a> !<\/h4>"
-=======
-                "ce_image": "{BASEURL}/resources/fileadmin/mountains-bg.jpg",
-                "ce_header": "Centauri CMS",
-                "ce_subheader": "blaaaa"
->>>>>>> 29da87eb5fff280bbe53803b5c8c471c26224916
             }
         },
         "1": {
