@@ -1,6 +1,15 @@
 {
     "0": {
         "0": {
+            "ctype": "header",
+            "fields": {
+                "ce_image": "http:\/\/centauri.msediqi.lan\/resources\/fileadmin\/mountains-bg.jpg",
+                "ce_header": "aaa",
+                "ce_subheader": "bb",
+                "ce_description": "<p>c<\/p>"
+            }
+        },
+        "1": {
             "ctype": "textimage",
             "fields": {
                 "ce_header": "Willkommen auf",
@@ -8,7 +17,7 @@
                 "ce_description": "<h4>Why Centauri CMS - read the <a href=\"#features\">features<\/a> !<\/h4>"
             }
         },
-        "1": {
+        "2": {
             "ctype": "header",
             "fields": {
                 "ce_image": "http:\/\/centauri.msediqi.lan\/resources\/fileadmin\/mountains-bg.jpg",

@@ -10,14 +10,15 @@ Centauri.Component.Page = function() {
         e.preventDefault();
 
         $btn = $(this);
-
         var ajaxBtnData = $btn.data("ajax-btn");
+        Centauri.Component.Page.$btn = $(this);
 
         if(!Centauri.Component.Page.registeredAjaxs[ajaxBtnData]) {
             Centauri.Component.Page.registeredAjaxs[ajaxBtnData] = true;
 
             if(ajaxBtnData == "newelement")  {
-                Centauri.Component.Page.$btn = $btn;
+                $("#newelement-btn").removeAttr("id");
+                $(this).attr("id", "newelement-btn");
 
                 if(!$("html").hasClass("modal-newelement")) {
                     Centauri.Utility.Loader.show("maincontent");
@@ -144,26 +145,64 @@ Centauri.Component.Page = function() {
             }
 
             if(ajaxBtnData == "savenewelement") {
+                $btn = $("#newelement-btn");
+
                 Centauri.Utility.Loader.show("maincontent");
 
                 $("#pages li[data-pid='" + pid + "']").trigger("click");
 
                 var uid = 0;
-                $contentelements = $pagedetail.find(".contentelement");
+                var index = $btn.data("index");
 
+                $contentelements = $pagedetail.find(".contentelement");
                 $contentelements.each(function() {
                     var ceUid = $(this).data("uid");
                     if(ceUid > uid) uid = ceUid;
                 });
 
+                $contentelement = $("#modal-newelement .contentelement.active");
+                var ctype = $contentelement.data("ctype");
+                $fields = $contentelement.find(".bottom .field .content");
+
+                var fields = [];
+
+                $fields.each(function() {
+                    $field = $(this);
+
+                    var tempField = {};
+
+                    var value = "";
+                    var field = "";
+
+                    if($field.find("input").length) {
+                        field = $field.find("input").attr("name");
+                        value = $field.find("input").val();
+                    }
+
+                    if($field.find("textarea").length) {
+                        field = $field.find("textarea").attr("name");
+                        value = $field.find(".ck-content").html();
+                    }
+
+                    if(typeof field == "string" && typeof value == "string") {
+                        tempField.field = field;
+                        tempField.value = value;
+                    }
+
+                    fields.push(tempField);
+                });
+
                 $("#modal-newelement").modal("hide");
-                $("#modal-newelement").modal("dispose");
 
                 Centauri.Utility.Ajax("Pagebutton", {
                     _token: Centauri.token,
                     pid: pid,
                     uid: uid,
-                    btn: "SAVE_NEW_ELEMENT"
+                    btn: "SAVE_NEW_ELEMENT",
+
+                    fields: fields,
+                    ctype: ctype,
+                    index: index
                 }, function(data) {
                     $("body").append(data);
                     Centauri.Utility.Loader.hide("maincontent");
@@ -181,5 +220,6 @@ Centauri.Component.Page = function() {
 Centauri.Component.Page.win = null,
 Centauri.Component.Page.winUrl = null,
 Centauri.Component.Page.$btn = null;
+$btn = null;
 
 Centauri.Component.Page.registeredAjaxs = {};

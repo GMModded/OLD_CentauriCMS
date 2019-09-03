@@ -17,5 +17,5 @@
                 </span>
             </li>
         @endif
-    @endforeach    
+    @endforeach
 </ul>

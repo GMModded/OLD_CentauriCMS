@@ -15,7 +15,9 @@
 @else
     <div id="ce_modul_textimage">
         <div class="image-view">
-            <img class="img-fluid" src="{{ $data['ce_image'] }}" />
+            @if(isset($data['ce_image']))
+                <img class="img-fluid" src="{{ $data['ce_image'] }}" />
+            @endif
         </div>
 
         <div class="text-view">
@@ -25,18 +27,9 @@
 
             <hr>
 
-<<<<<<< HEAD
             <p>
                 {{ $data["ce_subheader"] }}
             </p>
         </div>
     </div>
-
 @endif
-=======
-        <h6>
-            {{ $data["ce_subheader"] }}
-        </h6>
-    </div>
-</div>
->>>>>>> 29da87eb5fff280bbe53803b5c8c471c26224916

@@ -43,7 +43,7 @@ return [
         "textimage" => [
             "ce_image",
             "ce_header",
-            "ce_select",
+            "ce_subheader",
             "ce_description"
         ]
     ],

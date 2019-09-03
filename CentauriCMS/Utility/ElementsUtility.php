@@ -26,39 +26,76 @@ class ElementsUtility {
         ]);
 
         foreach($elements as $uid => $element) {
-            foreach($element["fields"] as $ctype => $value) {
+            $fields = $element["fields"];
+
+            foreach($fields as $ctype => $fieldVal) {
                 $palettesFields = $palettes[$element["ctype"]];
 
-                foreach($palettesFields as $key => $ctypeField) {
-                    if($palettesFields[$key] == $ctypeField && isset($element["fields"][$ctypeField])) {
-                        $cfg = $config[$ctypeField];
+                foreach($palettesFields as $palFieldKey => $field) {
+                    $cfg = (gettype($config[$field]) == "array") ? $config[$field] : null;
 
+                    if(!is_null($cfg)) {
                         foreach($cfg as $cfgKey => $cfgVal) {
                             if($cfgKey == "html") {
-                                $html = $cfg["html"];
-
-                                $value = $element["fields"][$ctypeField];
-                                $name = $ctypeField;
-
-                                $html = str_replace("{NAME}", $name, $html);
-
-                                if($replaceValueWithData) $html = str_replace("{VALUE}", $value, $html);
-                                else $html = str_replace("{VALUE}", "", $html);
-
-                                $palettesFields[$ctypeField][$cfgKey] = $html;
+                                $html = $cfg[$cfgKey];
+    
+                                $html = str_replace("{NAME}", "NAMEEE", $html);
+                                $html = str_replace("{VALUE}", "VALUEEE", $html);
+    
+                                $cfg[$cfgKey] = $html;
+                                $palettesFields[$field][$cfgKey] = $html;
                             } else {
-                                $palettesFields[$ctypeField][$cfgKey] = $cfgVal;
+                                $palettesFields[$field][$cfgKey] = $cfgVal;
                             }
                         }
                     }
-
-                    unset($palettesFields[$key]);
                 }
             }
 
             $palettes[$element["ctype"]] = $palettesFields;
-            $palettes[$element["ctype"]]["uid"] = $uid;
         }
+
+        dd($elements, $palettes);
+
+        // foreach($elements as $uid => $element) {
+        //     foreach($element["fields"] as $ctype => $value) {
+        //         $palettesFields = $palettes[$element["ctype"]];
+
+        //         foreach($palettesFields as $key => $ctypeField) {
+        //             if(isset($ctypeField) && isset($palettesFields[$key])) {
+        //                 if($palettesFields[$key] == $ctypeField) {
+        //                     $cfg = null;
+        //                     if(gettype($ctypeField) == "string") $cfg = $config[$ctypeField];
+
+        //                     if(!is_null($cfg)) {
+        //                         foreach($cfg as $cfgKey => $cfgVal) {
+        //                             if($cfgKey == "html") {
+        //                                 $html = $cfg["html"];
+    
+        //                                 $value = $element["fields"][$ctypeField] ?? "";
+        //                                 $name = $ctypeField;
+    
+        //                                 $html = str_replace("{NAME}", $name, $html);
+    
+        //                                 if($replaceValueWithData) $html = str_replace("{VALUE}", $value, $html);
+        //                                 else $html = str_replace("{VALUE}", "", $html);
+    
+        //                                 $palettesFields[$ctypeField][$cfgKey] = $html;
+        //                             } else {
+        //                                 $palettesFields[$ctypeField][$cfgKey] = $cfgVal;
+        //                             }
+        //                         }
+        //                     }
+        //                 }
+
+        //                 // unset($palettesFields[$key]);
+        //             }
+        //         }
+        //     }
+
+        //     $palettes[$element["ctype"]][] = $palettesFields;
+        //     // $palettes[$element["ctype"]]["uid"] = $uid;
+        // }
 
         return $palettes;
     }

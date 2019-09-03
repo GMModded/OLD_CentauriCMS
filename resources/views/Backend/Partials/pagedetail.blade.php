@@ -29,9 +29,11 @@
 
     <hr>
 
-    <a href="{{ url('ajax/pageedit?_token=' . $data['token'] . '&tool=newelement') }}" class="btn btn-primary px-3 py-2 mb-4 ml-0 waves-effect waves-light" data-ajax="true" data-ajax-btn="newelement">
+    <a href="{{ url('ajax/pageedit?_token=' . $data['token'] . '&tool=newelement') }}" class="btn btn-primary px-3 py-2 mb-4 ml-0 waves-effect waves-light" data-ajax="true" data-ajax-btn="newelement" data-index="0">
         <i class="fas fa-plus"></i>
     </a>
+
+    {{ dd($palettes) }}
 
     @foreach($palettes as $ctype => $palette)
         <div class="contentelement col-12" data-uid="{{ $palette['uid'] }}">
@@ -68,7 +70,7 @@
             </div>
         </div>
 
-        <a href="{{ url('ajax/pageedit?_token=' . $data['token'] . '&tool=newelement') }}" class="btn btn-primary px-3 py-2 mb-4 ml-0 waves-effect waves-light" data-ajax="true" data-ajax-btn="newelement">
+        <a href="{{ url('ajax/pageedit?_token=' . $data['token'] . '&tool=newelement') }}" class="btn btn-primary px-3 py-2 mb-4 ml-0 waves-effect waves-light" data-ajax="true" data-ajax-btn="newelement" data-index="{{ $loop->iteration }}">
             <i class="fas fa-plus"></i>
         </a>
     @endforeach

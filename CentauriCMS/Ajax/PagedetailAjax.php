@@ -34,6 +34,8 @@ class PagedetailAjax {
             $elementsUtility = new \CentauriCMS\Centauri\Utility\ElementsUtility;
             $palettes = $elementsUtility->findAll(true, $page, $pid);
 
+            dd($palettes);
+
             return view("Backend.Partials.pagedetail", [
                 "page" => $page,
                 "palettes" => $palettes,

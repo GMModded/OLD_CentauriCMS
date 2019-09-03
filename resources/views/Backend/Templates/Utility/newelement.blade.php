@@ -34,7 +34,7 @@
                         @if($loop->first)
                             <div class="tab-pane fade show active" id="{{ $tab }}-md" role="tabpanel" aria-labelledby="{{ $tab }}-tab-md">
                                 @foreach($palettes as $ctype => $palette)
-                                    <div class="contentelement col-12">
+                                    <div class="contentelement col-12" data-ctype="{{ $ctype }}">
                                         <div class="top">
                                             <strong>
                                                 @lang("centauri/elements.$ctype")

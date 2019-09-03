@@ -1,7 +1,7 @@
 {
     "0": {
         "0": {
-            "ctype": "header",
+            "ctype": "textimage",
             "fields": {
                 "ce_header": "Willkommen auf",
                 "ce_subheader": "CentauriCMS",
@@ -9,7 +9,7 @@
             }
         },
         "1": {
-            "ctype": "textimage",
+            "ctype": "header",
             "fields": {
                 "ce_image": "http:\/\/centauri.msediqi.lan\/resources\/fileadmin\/mountains-bg.jpg",
                 "ce_header": "Features",

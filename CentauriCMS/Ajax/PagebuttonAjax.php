@@ -17,6 +17,7 @@ class PagebuttonAjax {
         $pageDatasArr = $pageComponent->getPageDatas($page, $pid);
 
         $datasaverUtility = new \CentauriCMS\Centauri\Utility\DatasaverUtility;
+        $toastUtility = new \CentauriCMS\Centauri\Utility\ToastUtility;
 
         $btn = $request->input("btn");
         $type = $request->input("type");
@@ -27,7 +28,6 @@ class PagebuttonAjax {
             $config = $cfConfig["config"];
             $cfConfigPalettes = $cfConfig["palettes"];
 
-            $datasaverUtility = new \CentauriCMS\Centauri\Utility\DatasaverUtility;
             $elements = $datasaverUtility->findByType("elements", [
                 "page" => $page,
                 "pid" => $pid
@@ -119,8 +119,6 @@ class PagebuttonAjax {
                 }
             }
 
-            $toastUtility = new \CentauriCMS\Centauri\Utility\ToastUtility;
-
             if($pageSaved) {
                 return $toastUtility->render("Saved", "Page has been saved");
             } else if($elementsSaved) {
@@ -135,7 +133,66 @@ class PagebuttonAjax {
         }
 
         if($btn == "SAVE_NEW_ELEMENT") {
-            dd("hi");
+            $elementsSaved = false;
+
+            $elements = $datasaverUtility->findByType("elements", [
+                "page" => $page,
+                "pid" => $pid
+            ]);
+
+            $pid = $request->input("pid");
+            $uid = $request->input("uid") + 1;
+
+            $index = $request->input("index");
+            $GETfields = $request->input("fields");
+            $ctype = $request->input("ctype");
+
+            $fields = [];
+            foreach($GETfields as $key => $data) {
+                $field = $data["field"];
+                $value = $data["value"];
+                $fields[$field] = $value;
+            }
+
+            $nElement = [
+                "ctype" => $ctype,
+                "fields" => $fields
+            ];
+
+            $nElements = [];
+
+            $elementsCount = sizeof($elements);
+            if($index > $elementsCount) {
+                $nElements = $elements;
+                $nElements[] = $nElement;
+            } else {
+                foreach($elements as $key => $element) {
+                    if($key == $index) {
+                        if(!isset($elements[$key])) $nElements[$key] = $nElement;
+                    } else {
+                        if(!isset($nElements[$index])) $nElements[$index] = $nElement;
+                    }
+
+                    if(isset($nElements[$key])) $key++;
+                    if(!isset($nElements[$key])) $nElements[$key] = $element;
+                }
+            }
+
+            ksort($nElements);
+
+            foreach($nElements as $key => $element) {
+                $fields = $element["fields"];
+                
+                foreach($fields as $field => $value) {
+                    $elementsSaved = $this->saveElements($pid, $uid, $field, $value, $nElements);
+                }
+            }
+
+            if($elementsSaved) {
+                return $toastUtility->render("Saved", "Elements has been saved");
+            } else {
+                return $toastUtility->render("Error", "Something went wrong while saving!", "error");
+            }
         }
     }
 
