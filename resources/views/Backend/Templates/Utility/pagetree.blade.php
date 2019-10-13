@@ -1,5 +1,3 @@
-{{-- {{ dd(get_defined_vars()["__data"]) }} --}}
-
 <ul id="pages" class="list-group list-unstyled">
     @foreach($pages as $pid => $page)
         @if($pid == 0)
@@ -19,5 +17,5 @@
                 </span>
             </li>
         @endif
-    @endforeach    
+    @endforeach
 </ul>

@@ -31,35 +31,14 @@ class PagedetailAjax {
         }
 
         if($crtModule == "pages") {
-            $cfConfig = (include __DIR__ . "/../Datasaver/CFConfig.php");
-            $elements = $datasaverUtility->findByType("elements", ["page" => $page, "pid" => $pid]);
+            $elementsUtility = new \CentauriCMS\Centauri\Utility\ElementsUtility;
+            $palettes = $elementsUtility->findAll(true, $page, $pid);
 
-            $fieldsArray = [];
-
-            foreach($elements as $uid => $element) {
-                $fieldsArray[$uid] = [
-                    "ctype" => $element["ctype"],
-                    "fields" => $element["fields"]
-                ];
-            }
-
-            foreach($fieldsArray as $uid => $fieldArray) {
-                foreach($fieldArray["fields"] as $field => $value) {
-                    $cfg = $cfConfig[$field];
-
-                    foreach($cfg as $key => $txt) {
-                        $txt = str_replace("{VALUE}", $value, $txt);
-                        $txt = str_replace("{NAME}", $field, $txt);
-                        $cfg[$key] = $txt;
-                    }
-
-                    $fieldsArray[$uid]["fields"][$field] = $cfg;
-                }
-            }
+            dd($palettes);
 
             return view("Backend.Partials.pagedetail", [
                 "page" => $page,
-                "fieldsArray" => $fieldsArray,
+                "palettes" => $palettes,
 
                 "data" => [
                     "token" => $sessionToken

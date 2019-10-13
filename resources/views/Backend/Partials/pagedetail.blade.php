@@ -3,9 +3,13 @@
 <div class="page-detail" data-pid="{{ $page['pid'] }}">
     <div class="row">
         <div class="col">
-            <h3>
-                {{ $page["name"] }}
-            </h3>
+            <input type="text" id="pagetitle" value="{{ $page['name'] }}" />
+
+            @if(is_countable($page["urlmask"]))
+                <input type="text" id="pageurlmask" value="{{ implode(', ', $page['urlmask']) }}" />
+            @else
+                <input type="text" id="pageurlmask" value="{{ $page['urlmask'] }}" />
+            @endif
         </div>
 
         <div class="col-6 text-right">
@@ -25,29 +29,49 @@
 
     <hr>
 
-    @foreach($fieldsArray as $uid => $fieldArray)
-        <div class="contentelement col-12" data-uid="{{ $uid }}">
-            <div class="row">
+    <a href="{{ url('ajax/pageedit?_token=' . $data['token'] . '&tool=newelement') }}" class="btn btn-primary px-3 py-2 mb-4 ml-0 waves-effect waves-light" data-ajax="true" data-ajax-btn="newelement" data-index="0">
+        <i class="fas fa-plus"></i>
+    </a>
+
+    {{ dd($palettes) }}
+
+    @foreach($palettes as $ctype => $palette)
+        <div class="contentelement col-12" data-uid="{{ $palette['uid'] }}">
+            <div class="top row">
                 <div class="col">
                     <strong>
-                        @lang("centauri/elements.$fieldArray[ctype]")
+                        @lang("centauri/elements.$ctype")
                     </strong>
                 </div>
 
-                <div class="col text-right">
+                <div class="top-right">
                     <button class="btn btn-info waves-effect toggle-edit">
                         <i class="fas fa-eye"></i>
                     </button>
                 </div>
             </div>
 
-            <div class="bottom" style="display: none;">
-                @foreach($fieldArray["fields"] as $ctype => $cfg)
-                    <div class="field col">
-                        {!! $cfg["html"] !!}
+            <div class="bottom row" style="display: none;">
+                @foreach($palette as $field => $cfg)
+                    <div class="field col-12">
+                        @if(isset($cfg["label"]))
+                            <label>
+                                {{ $cfg["label"] }}
+                            </label>
+                        @endif
+
+                        @if(isset($cfg["html"]))
+                            <div class="content">
+                                {!! $cfg["html"] !!}
+                            </div>
+                        @endif
                     </div>
                 @endforeach
             </div>
         </div>
+
+        <a href="{{ url('ajax/pageedit?_token=' . $data['token'] . '&tool=newelement') }}" class="btn btn-primary px-3 py-2 mb-4 ml-0 waves-effect waves-light" data-ajax="true" data-ajax-btn="newelement" data-index="{{ $loop->iteration }}">
+            <i class="fas fa-plus"></i>
+        </a>
     @endforeach
 </div>

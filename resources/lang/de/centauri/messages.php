@@ -17,6 +17,14 @@ return [
 
     "header" => [
         "logout" => "Ausloggen",
-        "clearcache" => "Cache leeren"
+        "clearcache" => "Cache leeren",
+
+        "newelement" => "Neues Content Element erstellen"
+    ],
+
+    "labels" => [
+        "tabs" => [
+            "general" => "Allgemein"
+        ]
     ]
 ];

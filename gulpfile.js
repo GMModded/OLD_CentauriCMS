@@ -27,10 +27,17 @@ var gulp     = require('gulp');
 //    you've to link it here in order the task for js recognize it and concat & uglifys it.
 // NOTE: Watch out for case-sensivity of directory names!
 	var modules = {
-		"jquery"      : "packages/jquery/dist/jquery.min.js",
-		"jquery-ui"   : "packages/jquery-ui/jquery-ui.min.js",
-		"mdbootstrap" : "packages/mdbootstrap/js/mdb.min.js",
-		"ckeditor"    : "packages/ckeditor/ckeditor.js"
+		"jquery"              : "packages/jquery/dist/jquery.min.js",
+		"jquery-ui"           : "packages/jquery-ui/jquery-ui.min.js",
+
+		"bootstrap"           : "packages/bootstrap/dist/js/bootstrap.min.js",
+		"popperjs"            : "packages/popperjs/popper.min.js",
+		"mdbootstrap"         : "packages/mdbootstrap/js/mdb.min.js",
+
+		"ckeditor"            : "packages/ckeditor/ckeditor.js",
+
+		"cropperjs"           : "packages/cropperjs/dist/cropper.min.js",
+		"jquery-cropper"      : "packages/jquery-cropper/dist/jquery-cropper.min.js"
 	};
 
 
@@ -59,19 +66,30 @@ gulp.task('js:build', function() {
 	return gulp.src([
 		modules["jquery"],
 		modules["jquery-ui"],
+		modules["bootstrap"],
 		modules["mdbootstrap"],
+		modules["ckeditor"],
+		modules["cropperjs"],
+		modules["jquery-cropper"],
 		inputSrc + "js/**/*.js"
 	])
+
 	.pipe(concat(fileName + ".js"))
 	.pipe(gulp.dest(outputSrc + "js"))
 });
+
 gulp.task('js:deploy', function() {
 	return gulp.src([
 		modules["jquery"],
 		modules["jquery-ui"],
+		modules["bootstrap"],
 		modules["mdbootstrap"],
+		modules["ckeditor"],
+		modules["cropperjs"],
+		modules["jquery-cropper"],
 		inputSrc + "js/**/*.js"
 	])
+
 	.pipe(concat(fileName + ".js"))
 	.pipe(uglify())
 	.pipe(gulp.dest(outputSrc + "js"));

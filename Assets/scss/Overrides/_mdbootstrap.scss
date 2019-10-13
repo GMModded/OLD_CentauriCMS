@@ -1,0 +1,13 @@
+.nav-tabs {
+    .nav-link {
+        transition: .3s ease-in-out;
+
+        &.active {
+            position: relative;
+            z-index: 1;
+            margin-top: 3px;
+            margin-bottom: -3px;
+            box-shadow: 0px -3px 10px 0 rgba(0,0,0,.16), 0px 0px 0px 0px rgba(0,0,0,.12);
+        }
+    }
+}

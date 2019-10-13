@@ -5,16 +5,57 @@
  */
 
 return [
-    "ce_header" => [
-        "html" => "<input type='text' name='{NAME}' value='{VALUE}' class='centauri-input' />"
+    "config" => [
+        "ce_header" => [
+            "label" => "Header",
+            "html" => "<input type='text' name='{NAME}' value='{VALUE}' class='centauri-input' />"
+        ],
+
+        "ce_subheader" => [
+            "label" => "Subheader",
+            "html" => "<input type='text' name='{NAME}' value='{VALUE}' class='centauri-input' />"
+        ],
+
+        "ce_description" => [
+            "label" => "RTE",
+            "html" => "<textarea name='{NAME}' class='centauri-textarea'>{VALUE}</textarea>"
+        ],
+
+        "ce_image" => [
+            "label" => "Image",
+            "wizard" => "ImageWizard",
+            "html" => "<img name='{NAME}' class='img-fluid' src='{VALUE}' style='max-width: 150px;' />"
+        ],
+
+        "ce_select" => [
+            "label" => "Select",
+            "html" => "<select><option value='1'>1</option></select>"
+        ]
     ],
 
-    "ce_subheader" => [
-        "html" => "<input type='text' name='{NAME}' value='{VALUE}' class='centauri-input' />"
+    "palettes" => [
+        "header" => [
+            "ce_header",
+            "ce_subheader",
+            "ce_description"
+        ],
+
+        "textimage" => [
+            "ce_image",
+            "ce_header",
+            "ce_subheader",
+            "ce_description"
+        ]
     ],
 
-    "ce_image" => [
-        "wizard" => "ImageWizard",
-        "html" => "<img style='max-width: 150px;' class='img-fluid' src='{VALUE}' />"
+    "tabs" => [
+        "general" => [
+            "header",
+            "textimage"
+        ],
+
+        "test" => [
+            "textimage"
+        ]
     ]
 ];

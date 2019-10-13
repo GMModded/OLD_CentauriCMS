@@ -1,18 +1,20 @@
 {
     "0": {
         "0": {
-            "ctype": "header",
+            "ctype": "textimage",
             "fields": {
-                "ce_header": "willkommen auf centauri cms !",
-                "ce_subheader": "lmao xD"
+                "ce_header": "Willkommen auf",
+                "ce_subheader": "CentauriCMS",
+                "ce_description": "<h4>Why Centauri CMS - read the <a href=\"#features\">features<\/a> !<\/h4>"
             }
         },
         "1": {
-            "ctype": "textimage",
+            "ctype": "header",
             "fields": {
-                "ce_image": "http://centauri.msediqi.lan/resources/fileadmin/mountains-bg.jpg",
-                "ce_header": "Centauri CMS",
-                "ce_subheader": "blaaaa"
+                "ce_image": "http:\/\/centauri.msediqi.lan\/resources\/fileadmin\/mountains-bg.jpg",
+                "ce_header": "Features",
+                "ce_subheader": "blaaaa",
+                "ce_description": ""
             }
         }
     },
@@ -20,8 +22,8 @@
         "0": {
             "ctype": "header",
             "fields": {
-                "ce_header": "Unsere Produkte",
-                "ce_subheader": "Sehen Sie hier unsere auswahl an Produkten und Dienstleistungen!"
+                "ce_header": "produkte",
+                "ce_subheader": "bla"
             }
         }
     }

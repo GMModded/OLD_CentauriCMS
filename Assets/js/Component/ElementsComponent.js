@@ -2,6 +2,9 @@ Centauri.Component.Elements = function() {
     $maincontent = $("#centauricms #content #maincontent");
     $contentelements = $maincontent.find(".content .page-detail .contentelement");
 
+    // Initializing RTE's
+    Centauri.Component.RTE();
+
     $contentelements.each(function() {
         $btn = $(this).find("button.toggle-edit");
 

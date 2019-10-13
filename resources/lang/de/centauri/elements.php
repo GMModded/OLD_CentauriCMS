@@ -1,7 +1,6 @@
 <?php
 
 return [
-    "header" => "Header",
-    "subheader" => "Subheader",
+    "header" => "Teasende Headers",
     "textimage" => "Text mit Bild"
 ];

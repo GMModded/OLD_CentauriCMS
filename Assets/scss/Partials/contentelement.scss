@@ -1,0 +1,19 @@
+.contentelement {
+    .top {}
+
+    .bottom {
+        padding-top: 15px;
+
+        .field {
+            &:not(:last-child) {
+                margin-bottom: 15px;
+            }
+    
+            input {
+                width: 100%;
+                border: unset;
+                padding: 7px;
+            }
+        }
+    }
+}

@@ -1,13 +1,17 @@
 <div id="ce_modul_header">
     <div class="text-view">
-        <h2>
+        <h1>
             {{ $data["ce_header"] }}
+        </h1>
+
+        <h2>
+            {{ $data["ce_subheader"] }}
         </h2>
 
-        <hr>
+        @if($data["ce_description"])
+            <hr>
 
-        <p>
-            {{ $data["ce_subheader"] }}
-        </p>
+            {!! $data["ce_description"] !!}
+        @endif
     </div>
 </div>

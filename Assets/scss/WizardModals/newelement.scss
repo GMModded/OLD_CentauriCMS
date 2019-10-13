@@ -1,0 +1,46 @@
+$grey_1: #cecece;
+$grey_2: #dedede;
+$grey_3: #aaa;
+
+#modal-newelement {
+    .card {
+        top: -8px;
+    }
+
+    .contentelement {
+        border: 1px solid $grey_2;
+        box-shadow: 0 0 15px $grey_1;
+        padding: 15px;
+        transition: .3s ease-in-out;
+
+        &:not(:last-child) {
+            margin-bottom: 15px;
+        }
+
+        &.active {
+            .top {
+                strong {
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        .top {
+            strong {
+                cursor: pointer;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        .bottom {
+            .field {
+                input {
+                    border: 1px solid $grey_3;
+                }
+            }
+        }
+    }
+}
