@@ -11,7 +11,7 @@
     </head>
 
     <body>
-        <div id="centauricms" class="d-flex">
+        <div id="centauricms" class="d-flex" style="background-image: url({{ $data['_ENV']['APP_URL'] }}/resources/fileadmin/mountains-bg.jpg);">
             @centauri("session-init")
 
             <section id="dashboard">

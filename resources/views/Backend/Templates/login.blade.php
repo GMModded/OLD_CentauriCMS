@@ -11,7 +11,7 @@
     </head>
 
     <body>
-        <div id="centauricms">
+        <div id="centauricms" style="background-image: url({{ $data['_ENV']['APP_URL'] }}/resources/fileadmin/mountains-bg.jpg);">
             <div class="login">
                 <div class="container">
                     <div class="row">
