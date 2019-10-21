@@ -1,5 +1,7 @@
 {{-- {{ dd(get_defined_vars()["__data"]) }} --}}
 
 <div class="home-detail">
-    <iframe src="{{ $page['publicUrl'] }}"></iframe>
+    @if(isset($page->publicUrl))
+        <iframe src="{{ $page->publicUrl }}"></iframe>
+    @endif
 </div>

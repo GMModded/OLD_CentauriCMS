@@ -1,3 +1,5 @@
+{{-- {{ dd(get_defined_vars()["__data"]) }} --}}
+
 <div id="modal-newelement" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg cascading-modal" role="document">
         <div class="modal-content">
@@ -42,7 +44,7 @@
                                         </div>
 
                                         <div class="bottom row" style="display: none;">
-                                            @foreach($palette as $field => $cfg)
+                                            @foreach($palette["configs"] as $field => $cfg)
                                                 <div class="field col-12">
                                                     @if(isset($cfg["label"]))
                                                         <label>
@@ -73,7 +75,7 @@
                                         </div>
 
                                         <div class="bottom row" style="display: none;">
-                                            @foreach($palette as $field => $cfg)
+                                            @foreach($palette["configs"] as $field => $cfg)
                                                 <div class="field col-12">
                                                     @if(isset($cfg["label"]))
                                                         <label>

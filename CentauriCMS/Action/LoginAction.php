@@ -2,7 +2,6 @@
 
 namespace CentauriCMS\Centauri\Action;
 
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 
 class LoginAction {
@@ -14,15 +13,25 @@ class LoginAction {
 
         $username = $request->input("username");
         $password = $request->input("password");
-        $language = $request->input("language") ?? $fallbackLanguage;
 
-        if($username == "admin" && $password == "password") {
+        $lid = $request->input("language");
+        $languagelabel = $request->input("languagelabel");
+
+        $languageshortcut = strtolower($languagelabel);
+        $languageshortcut = $languageshortcut[0] . $languageshortcut[1];
+
+        $user = \Illuminate\Support\Facades\DB::table("be_users")->select("*")->where([
+            "username" => $username,
+            "password" => md5($password)
+        ])->get()->first();
+
+        if($user) {
             Session::put("LOGGED_IN", true);
             Session::put("username", $username);
             Session::put("password", $password);
-            Session::put("language", $language);
+            Session::put("languageid", $lid);
 
-            return redirect("/centauri/$language")->with([
+            return redirect("/centauri/$languageshortcut")->with([
                 "LOGIN_STATE" => "200"
             ]);
         } else {

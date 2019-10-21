@@ -6,25 +6,9 @@ return [
         "Core" => "1.0"
     ],
 
-    "language" => [
-        "default" => "de",
-        "fallback" => "de",
-
-        "list" => [
-            "de",
-            "en"
-        ]
-    ],
+    "language" => "de",
 
     "hooks" => [
         "404" => "\\CentauriCMS\\Centauri\\Hook\\PageNotFoundHook::handle"
-    ],
-
-    "web" => [
-        "requests" => [
-            "urlMasks" => [
-                "ignoreCamelCase" => false
-            ]
-        ]
     ]
 ];

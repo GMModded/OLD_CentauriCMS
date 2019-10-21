@@ -7165,6 +7165,12 @@ a {
 #centauricms::-webkit-scrollbar-corner {
   background: transparent; }
 
+.page-detail .input-group.centauri-dropdown {
+  margin-bottom: 15px; }
+
+.page-detail .input-group input:focus {
+  border: 1px solid #fff !important; }
+
 #centauricms {
   height: 100vh;
   background-image: url(/resources/fileadmin/mountains-bg.jpg);
@@ -7203,11 +7209,12 @@ a {
   50% {
     transform: scaleY(1.8); } }
 
-form .input-group {
+.input-group {
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-  border-radius: 5px;
-  margin-bottom: 15px; }
-  form .input-group .icon-view {
+  border-radius: 5px; }
+  .input-group:not(.centauri-dropdown) {
+    margin-bottom: 15px; }
+  .input-group .icon-view {
     padding: 10px;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
@@ -7217,14 +7224,14 @@ form .input-group {
     min-width: 45px;
     order: 0;
     transition: .3s; }
-    form .input-group .icon-view i {
+    .input-group .icon-view i {
       position: relative;
       transform: translate(-50%, -50%);
       left: 50%;
       top: 50%;
       display: block;
       font-size: 18px; }
-  form .input-group input {
+  .input-group input {
     border-top-right-radius: 5px;
     border-top-left-radius: 0;
     border-bottom-right-radius: 5px;
@@ -7234,11 +7241,12 @@ form .input-group {
     outline: none !important;
     box-shadow: none !important;
     background-color: #fff;
-    order: 1; }
-    form .input-group input:focus {
+    order: 1;
+    height: 45px; }
+    .input-group input:focus, .input-group input.active {
       border: 1px solid #14142c;
       border-left: unset; }
-      form .input-group input:focus + .icon-view {
+      .input-group input:focus + .icon-view, .input-group input.active + .icon-view {
         background-color: #14142c;
         color: #fff; }
 
@@ -7267,15 +7275,6 @@ form .input-group {
     padding: 45px 30px;
     border-radius: 5px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.9); }
-    #centauricms .login .wrapper form .input-group input {
-      border-top-right-radius: 5px;
-      border-bottom-right-radius: 5px;
-      height: 45px; }
-    #centauricms .login .wrapper form .bottom .input-group {
-      height: 100%;
-      margin-bottom: 0; }
-      #centauricms .login .wrapper form .bottom .input-group.centauri-dropdown {
-        margin-right: 15px; }
     #centauricms .login .wrapper form .bottom input[type="submit"] {
       height: 100%;
       color: #fff;
@@ -7403,3 +7402,51 @@ form .input-group {
     margin-top: 3px;
     margin-bottom: -3px;
     box-shadow: 0px -3px 10px 0 rgba(0, 0, 0, 0.16), 0px 0px 0px 0px rgba(0, 0, 0, 0.12); }
+
+.centauri-dropdown {
+  cursor: pointer; }
+  .centauri-dropdown > input {
+    cursor: pointer; }
+  .centauri-dropdown .menu-view {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    min-width: 10rem;
+    padding: 0.5rem 0;
+    margin: 0.125rem 0 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 0.25rem; }
+    .centauri-dropdown .menu-view.show {
+      display: block; }
+    .centauri-dropdown .menu-view .item {
+      display: block;
+      width: 100%;
+      padding: 0.25rem 1.5rem;
+      clear: both;
+      font-weight: 400;
+      color: #212529;
+      text-align: inherit;
+      white-space: nowrap;
+      background-color: transparent;
+      border: 0; }
+      .centauri-dropdown .menu-view .item:hover {
+        color: #16181b;
+        text-decoration: none;
+        background-color: #f8f9fa; }
+        .centauri-dropdown .menu-view .item:hover:active {
+          color: #fff;
+          text-decoration: none;
+          background-color: #007bff; }
+  .centauri-dropdown .input-group {
+    height: 100%;
+    margin-bottom: 0; }
+    .centauri-dropdown .input-group.centauri-dropdown {
+      margin-right: 15px; }

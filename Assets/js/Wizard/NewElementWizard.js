@@ -13,7 +13,9 @@ Centauri.Wizard.NewElement = function() {
                 if(!$(this).is($contentelement)) {
                     $(this).find(".bottom").slideUp();
 
-                    if($(this).hasClass("active")) $(this).removeClass("active");
+                    if($(this).hasClass("active")) {
+                        $(this).removeClass("active");
+                    }
                 }
             });
 

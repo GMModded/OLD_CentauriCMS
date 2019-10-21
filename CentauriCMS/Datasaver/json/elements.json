@@ -12,6 +12,7 @@
         "1": {
             "ctype": "textimage",
             "fields": {
+                "ce_image": "",
                 "ce_header": "Willkommen auf",
                 "ce_subheader": "CentauriCMS",
                 "ce_description": "<h4>Why Centauri CMS - read the <a href=\"#features\">features<\/a> !<\/h4>"

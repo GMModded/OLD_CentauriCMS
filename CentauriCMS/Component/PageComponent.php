@@ -4,8 +4,6 @@ namespace CentauriCMS\Centauri\Component;
 
 use Illuminate\Support\Facades\App;
 
-use \CentauriCMS\Centauri\Utility\DatasaverUtility;
-
 class PageComponent {
     protected $validateNodes = [
         "action",
@@ -27,6 +25,7 @@ class PageComponent {
         $filteredUri = $this->filteredUri($uri, $request);
         if($filteredUri != false) return $filteredUri;
 
+        $elementComponent = new \CentauriCMS\Centauri\Component\ElementComponent;
         $datasaverUtility = new \CentauriCMS\Centauri\Utility\DatasaverUtility;
 
         if(explode("/", $uri)[0] == "centauri") {
@@ -35,11 +34,19 @@ class PageComponent {
 
             $loggedIn = $request->session()->get("LOGGED_IN");
 
+            $languageComponent = new \CentauriCMS\Centauri\Component\LanguageComponent;
+            $languages = $languageComponent->findAll();
+
             if(is_null($loggedIn)) {
                 return view("Backend.Templates.login", [
                     "data" => [
                         "_ENV" => $_ENV,
-                        "label" => ["state" => "Login"]
+
+                        "languages" => $languages,
+
+                        "label" => [
+                            "state" => "Login"
+                        ]
                     ]
                 ]);
             } else {
@@ -49,43 +56,56 @@ class PageComponent {
                 return view("Backend.Templates.centauri", [
                     "data" => [
                         "_ENV" => $_ENV,
+
                         "token" => $sessionToken,
-                        "label" => ["state" => "Backend"],
+                        "languages" => $languages,
+
+                        "label" => [
+                            "state" => "Backend"
+                        ],
+
                         "modules" => $modules
                     ]
                 ]);
             }
         } else {
-            $languageUtility = new \CentauriCMS\Centauri\Utility\LanguageUtility;
-            $languageUtility->updateLanguage($request, explode("/", $uri)[0]);
-
-            $pages = $datasaverUtility->findByType("pages");
             $page = $this->findByUri($uri);
 
-            // Condition to catch "404"-page requests -> which ain't fit to the requested URI from the client
             if(is_null($page)) {
                 $config = \CentauriCMS\Centauri\Utility\ConfigUtility::get();
-                $notFoundHook = explode("::", $config["hooks"]["404"]);
 
-                $action = $notFoundHook[1];
-                $class = $notFoundHook[0];
+                if(isset($config["hooks"]["404"])) {
+                    $notFoundHook = null;
 
-                call_user_func([
-                    $Centauri::makeInstance($class),
-                    ucfirst($action)
-                ], $request);
+                    if(strpos($config["hooks"]["404"], "::") !== false) {
+                        $notFoundHook = explode("::", $config["hooks"]["404"]);
+                    }
+
+                    if(strpos($config["hooks"]["404"], "->") !== false) {
+                        $notFoundHook = explode("->", $config["hooks"]["404"]);
+                    }
+
+                    if(is_null($notFoundHook)) {
+                        throw new \Exception("NotFoundHook can't be null!");
+                    }
+
+                    $class = $notFoundHook[0];
+                    $action = $notFoundHook[1];
+
+                    call_user_func([
+                        $Centauri::makeInstance($class),
+                        ucfirst($action)
+                    ], $request);
+                }
 
                 return $page;
             }
 
-            $pid = $page["pid"];
-            $elements = $datasaverUtility->findByType("elements", [
-                "page" => $page,
-                "pid" => $pid
-            ]);
+            $pid = $page->pid;
+            $elements = $elementComponent->findByPid($pid);
 
             $renderingComponent = new \CentauriCMS\Centauri\Component\RenderingComponent;
-            return $renderingComponent->renderFrontend($elements);
+            return $renderingComponent->renderFrontend($page, $elements, []);
         }
     }
 
@@ -98,76 +118,56 @@ class PageComponent {
      * @return NULL|array
      */
     public function findByUri($uri) {
-        $config = \CentauriCMS\Centauri\Utility\ConfigUtility::get();
-        $iCC = $config["web"]["requests"]["urlMasks"]["ignoreCamelCase"];
+        $pages = $this->findAll();
 
-        $datasaverUtility = new \CentauriCMS\Centauri\Utility\DatasaverUtility;
-        $pages = $datasaverUtility->findByType("pages");
+        foreach($pages as $page) {
+            if(strpos($page->urlmasks, ",") !== false) {
+                $urlmasks = explode(",", $page->urlmasks);
 
-        $page = NULL;
+                foreach($urlmasks as $urlmaskitem) {
+                    $urlmaskitem = trim($urlmaskitem);
 
-        foreach($pages as $key => $ipage) {
-            $urlmask = $ipage["urlmask"];
-            $count = gettype($urlmask) == "array" ? count($urlmask) : 1;
-
-            if($iCC) {
-                if($count > 1) {
-                    foreach($urlmask as $um) {
-                        if(strtolower($um) == strtolower($uri)) {
-                            $ipage["pid"] = "$key";
-                            $page = $ipage;
-                            break;
-                        }
-                    }
-                } else {
-                    if(strtolower($urlmask) == strtolower($uri)) {
-                        $ipage["pid"] = "$key";
-                        $page = $ipage;
-                        break;
+                    if(strtolower($urlmaskitem) == strtolower($uri)) {
+                        return $page;
                     }
                 }
             } else {
-                if($count > 1) {
-                    foreach($urlmask as $um) {
-                        if($um == $uri) {
-                            $ipage["pid"] = "$key";
-                            $page = $ipage;
-                            break;
-                        }
-                    }
-                } else {
-                    if($urlmask == $uri) {
-                        $ipage["pid"] = "$key";
-                        $page = $ipage;
-                        break;
-                    }
+                if(strtolower($page->urlmasks) == strtolower($uri)) {
+                    return $page;
                 }
             }
         }
 
+        return;
+    }
+
+    /**
+     * Returns a page by its uid
+     * 
+     * @param int $uid
+     * 
+     * @return void
+     */
+    public function findByUid($uid) {
+        $page = \Illuminate\Support\Facades\DB::table("pages")->select("*")->where("uid", $uid)->get()->first();
         return $page;
     }
 
     /**
-     * Finds a page from the pages.json array by its pid
+     * Returns a page by its pid
      * 
-     * @param int|string $pid
+     * @param int $pid
      * 
-     * @return array|null
+     * @return void
      */
-    public function findByPid($pid, $returnArray = true) {
-        $datasaverUtility = new \CentauriCMS\Centauri\Utility\DatasaverUtility;
-        $pages = $datasaverUtility->findByType("pages", [], $returnArray);
-
-        $page = NULL;
-
-        if($returnArray) {
-            $page = isset($pages[$pid]) ? $pages[$pid] : NULL;
-        } else {
-            $page = isset($pages->$pid) ? $pages->$pid : NULL;
-        }
-
+    public function findByPid($pid) {
+        $page = \Illuminate\Support\Facades\DB::table("pages")->select("*")->where("pid", $pid)->get()->first();
         return $page;
+    }
+
+    public function findAll() {
+        $pages = \Illuminate\Support\Facades\DB::table("pages")->select("*")->get();
+        return $pages;
     }
 
     /**

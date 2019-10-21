@@ -9,8 +9,6 @@ Centauri.Utility.Ajax = function(ajax, data, cb) {
         url = ajax;
     }
 
-    console.log(url);
-
     $.ajax({
         url: url,
         data: data,

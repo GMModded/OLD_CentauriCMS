@@ -1,20 +1,55 @@
 {{-- {{ dd(get_defined_vars()["__data"]) }} --}}
 
-<div class="page-detail" data-pid="{{ $page['pid'] }}">
+<div class="page-detail" data-uid="{{ $page->uid }}" data-pid="{{ $page->pid }}">
     <div class="row">
-        <div class="col">
-            <input type="text" id="pagetitle" value="{{ $page['name'] }}" />
+        <div class="col-9">
+            <div class="d-flex">
+                <div class="input-group mr-3">
+                    <input type="text" class="col" id="pagetitle" placeholder="Page title" value="{{ $page->title }}">
 
-            @if(is_countable($page["urlmask"]))
-                <input type="text" id="pageurlmask" value="{{ implode(', ', $page['urlmask']) }}" />
-            @else
-                <input type="text" id="pageurlmask" value="{{ $page['urlmask'] }}" />
-            @endif
+                    <div class="icon-view">
+                        <i class="fa fa-heading fa-lg fa-fw"></i>
+                    </div>
+                </div>
+
+                <div class="input-group mr-3">
+                    <input type="text" class="col" id="pageurlmasks" placeholder="Page Masks" value="{{ $page->urlmasks }}">
+
+                    <div class="icon-view">
+                        <i class="fa fa-link fa-lg fa-fw"></i>
+                    </div>
+                </div>
+            
+                <div class="input-group centauri-dropdown">
+                    <input type="hidden" name="language" value="{{ $language->uid }}">
+                    <input type="text" class="col" id="language" name="languagelabel" value="{{ $language->title }}">
+
+                    <div class="icon-view">
+                        <i class="fa fa-language fa-lg fa-fw"></i>
+                    </div>
+
+                    <div class="menu-view w-100">
+                        @foreach($languages as $languageitem)
+                            @if(!$languageitem->hidden)
+                                @if($languageitem->uid == $language->uid)
+                                    <div class="item" data-value="{{ $languageitem->uid }}">
+                                        {{ $languageitem->title }}
+                                    </div>
+                                @else
+                                    <div class="item" data-value="{{ $languageitem->uid }}">
+                                        {{ $languageitem->title }}
+                                    </div>
+                                @endif
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="col-6 text-right">
+        <div class="col text-right">
             <a href="{{ url('ajax/pageedit?_token=' . $data['token'] . '&tool=showfrontend') }}" class="btn btn-info px-3 py-2 waves-effect waves-light" data-ajax="true" data-ajax-btn="showfrontend">
-                <i class="fas fa-eye"></i>
+                <i class="fas fa-external-link-alt"></i>
             </a>
 
             <a href="{{ url('ajax/pageedit?_token=' . $data['token'] . '&tool=save') }}" class="btn btn-success px-3 py-2 waves-effect waves-light" data-ajax="true" data-ajax-btn="save">
@@ -29,40 +64,74 @@
 
     <hr>
 
-    <a href="{{ url('ajax/pageedit?_token=' . $data['token'] . '&tool=newelement') }}" class="btn btn-primary px-3 py-2 mb-4 ml-0 waves-effect waves-light" data-ajax="true" data-ajax-btn="newelement" data-index="0">
-        <i class="fas fa-plus"></i>
-    </a>
+    @foreach($backendLayout["rowCols"] as $colPos => $rowCol)
+        <a href="{{ url('ajax/pageedit?_token=' . $data['token'] . '&tool=newelement') }}" class="btn btn-primary px-3 py-2 mb-4 ml-0 waves-effect waves-light" data-ajax="true" data-ajax-btn="newelement" data-index="0">
+            <i class="fas fa-plus"></i>
+        </a>
 
-    {{ dd($palettes) }}
+        <div class="row" data-colPos="{{ $colPos }}">
+            @foreach($elements[$colPos] as $element)
+                <div class="contentelement col-12">
+                    <h3>
+                        a
+                    </h3>
+                </div>
+            @endforeach
 
-    @foreach($palettes as $ctype => $palette)
-        <div class="contentelement col-12" data-uid="{{ $palette['uid'] }}">
-            <div class="top row">
+            @if(!$loop->last)
+                <a href="{{ url('ajax/pageedit?_token=' . $data['token'] . '&tool=newelement') }}" class="btn btn-primary px-3 py-2 mb-4 ml-0 waves-effect waves-light" data-ajax="true" data-ajax-btn="newelement" data-index="0">
+                    <i class="fas fa-plus"></i>
+                </a>
+            @endif
+        </div>
+
+        @if($loop->last)
+            <a href="{{ url('ajax/pageedit?_token=' . $data['token'] . '&tool=newelement') }}" class="btn btn-primary px-3 py-2 mb-4 ml-0 waves-effect waves-light" data-ajax="true" data-ajax-btn="newelement" data-index="0">
+                <i class="fas fa-plus"></i>
+            </a>
+        @endif
+    @endforeach
+
+    {{-- @foreach($elements as $element)
+        <div class="contentelement col-12" data-uid="{{ $element->uid }}">
+            <div class="row top">
                 <div class="col">
                     <strong>
-                        @lang("centauri/elements.$ctype")
+                        @lang("centauri/elements.$element->CType")
                     </strong>
                 </div>
 
                 <div class="top-right">
-                    <button class="btn btn-info waves-effect toggle-edit">
-                        <i class="fas fa-eye"></i>
+                    <button class="btn btn-info waves-effect" data-toggle="edit">
+                        <i class="fas fa-pencil-alt"></i>
+                    </button>
+
+                    <button class="btn btn-warning waves-effect" data-toggle="hidden">
+                        @if($element->hidden)
+                            <i class="fas fa-eye-slash"></i>
+                        @else
+                            <i class="fas fa-eye"></i>
+                        @endif
+                    </button>
+
+                    <button class="btn btn-danger waves-effect" data-toggle="delete">
+                        <i class="fas fa-trash"></i>
                     </button>
                 </div>
             </div>
 
-            <div class="bottom row" style="display: none;">
-                @foreach($palette as $field => $cfg)
+            <div class="row bottom" style="display: none;">
+                @foreach($element->fields as $field)
                     <div class="field col-12">
-                        @if(isset($cfg["label"]))
+                        @if(isset($field["label"]))
                             <label>
-                                {{ $cfg["label"] }}
+                                {{ $field["label"] }}
                             </label>
                         @endif
 
-                        @if(isset($cfg["html"]))
+                        @if(isset($field["html"]))
                             <div class="content">
-                                {!! $cfg["html"] !!}
+                                {!! $field["html"] !!}
                             </div>
                         @endif
                     </div>
@@ -73,5 +142,5 @@
         <a href="{{ url('ajax/pageedit?_token=' . $data['token'] . '&tool=newelement') }}" class="btn btn-primary px-3 py-2 mb-4 ml-0 waves-effect waves-light" data-ajax="true" data-ajax-btn="newelement" data-index="{{ $loop->iteration }}">
             <i class="fas fa-plus"></i>
         </a>
-    @endforeach
+    @endforeach --}}
 </div>

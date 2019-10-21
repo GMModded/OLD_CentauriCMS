@@ -126,9 +126,9 @@
                 {{ \CentauriCMS\Centauri\Utility\ToastUtility::show(
                     true,
 
-                    app("translator")->getFromJson("centauri/messages.welcome.title", ["username" => session()->get("username")]),
-                    app("translator")->getFromJson("centauri/messages.welcome.description")
-                )}}
+                    app("translator")->get("centauri/messages.welcome.title", ["username" => session()->get("username")]),
+                    app("translator")->get("centauri/messages.welcome.description")
+                ) }}
             @endif
         @endif
 

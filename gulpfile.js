@@ -66,6 +66,7 @@ gulp.task('js:build', function() {
 	return gulp.src([
 		modules["jquery"],
 		modules["jquery-ui"],
+		modules["popperjs"],
 		modules["bootstrap"],
 		modules["mdbootstrap"],
 		modules["ckeditor"],
@@ -82,6 +83,7 @@ gulp.task('js:deploy', function() {
 	return gulp.src([
 		modules["jquery"],
 		modules["jquery-ui"],
+		modules["popperjs"],
 		modules["bootstrap"],
 		modules["mdbootstrap"],
 		modules["ckeditor"],

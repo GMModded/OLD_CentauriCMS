@@ -4,7 +4,8 @@ Centauri.Component.Page = function() {
     $pagedetail = $maincontent.find(".content .page-detail");
     $btn = $("a.btn[data-ajax='true']");
 
-    var pid = $pagedetail.data("pid");
+    var pid = $pagedetail.data("pid"),
+        uid = $pagedetail.data("uid");
 
     $btn.click(function(e) {
         e.preventDefault();
@@ -20,70 +21,71 @@ Centauri.Component.Page = function() {
                 $("#newelement-btn").removeAttr("id");
                 $(this).attr("id", "newelement-btn");
 
-                if(!$("html").hasClass("modal-newelement")) {
-                    Centauri.Utility.Loader.show("maincontent");
+                Centauri.Utility.Loader.show("maincontent");
 
-                    $("html").addClass("modal-newelement");
+                Centauri.Utility.Ajax(Centauri.Utility.URL("get").ajax + "Pagebutton", {
+                    _token: Centauri.token,
+                    pid: pid,
+                    btn: "NEW_ELEMENT"
+                }, function(data) {
+                    Centauri.Utility.Loader.hide("maincontent");
+                    $("body").append(data);
 
-                    Centauri.Utility.Ajax("Pagebutton", {
-                        _token: Centauri.token,
-                        pid: pid,
-                        btn: "NEW_ELEMENT"
-                    }, function(data) {
-                        Centauri.Utility.Loader.hide("maincontent");
-                        $("body").append(data);
+                    Centauri.Component.RTE();
+                    Centauri.Wizard.NewElement();
 
-                        Centauri.Component.RTE();
-                        Centauri.Wizard.NewElement();
-
-                        Centauri.Component.Page.registeredAjaxs[ajaxBtnData] = false;
-                    });
-                } else {
-                    $("#modal-newelement").modal("show");
                     Centauri.Component.Page.registeredAjaxs[ajaxBtnData] = false;
-                }
+                });
             }
 
             if(ajaxBtnData == "showfrontend") {
-                Centauri.Utility.Ajax("Pagebutton", {
+                Centauri.Utility.Ajax(Centauri.Utility.URL("get").ajax + "Pagebutton", {
                     _token: Centauri.token,
                     pid: pid,
                     btn: "SHOW_FRONTEND"
                 }, function(data) {
                     Centauri.Utility.Loader.hide("maincontent");
-    
+
                     if(Centauri.Component.Page.winUrl != data) {
                         Centauri.Component.Page.win = null;
                     }
-    
+
                     if(Centauri.Component.Page.win == null) {
                         Centauri.Component.Page.win = window.open(data, "_blank");
                         Centauri.Component.Page.winUrl = data;
                     }
-    
+
                     Centauri.Component.Page.win.focus();
                     Centauri.Component.Page.registeredAjaxs[ajaxBtnData] = false;
                 });
             }
 
             if(ajaxBtnData == "save") {
+                Centauri.Utility.Loader.show("maincontent");
+                Centauri.Utility.Loader.show("pagetree");
+
                 // Saving page itself via AJAX call
                 var title = $maincontent.find("input#pagetitle").val(),
-                    urlmask = $maincontent.find("input#pageurlmask").val();
+                    urlmask = $maincontent.find("input#pageurlmasks").val(),
+                    lid = $maincontent.find("input#language").parent().find("[type='hidden']").val();
 
-                Centauri.Utility.Ajax("Pagebutton", {
+                Centauri.Utility.Ajax(Centauri.Utility.URL("get").ajax + "Pagebutton", {
                     _token: Centauri.token,
                     pid: pid,
                     btn: "SAVE",
                     type: "PAGE",
 
                     page: {
+                        lid: lid,
                         title: title,
-                        urlmask: urlmask
+                        urlmasks: urlmask
                     }
                 }, function(data) {
-                    Centauri.Utility.Loader.hide("maincontent");
                     $("body").append(data);
+
+                    Centauri.Component.Pagetree();
+                    Centauri.Utility.Loader.hide("pagetree");
+                    Centauri.Utility.Loader.hide("maincontent");
 
                     Centauri.Component.Page.registeredAjaxs[ajaxBtnData] = false;
                 });
@@ -116,7 +118,7 @@ Centauri.Component.Page = function() {
 
                         if(typeof field == "string" && typeof value == "string") {
                             // AJAX-call to save every content element inside a foreach
-                            Centauri.Utility.Ajax("Pagebutton", {
+                            Centauri.Utility.Ajax(Centauri.Utility.URL("get").ajax + "Pagebutton", {
                                 _token: Centauri.token,
                                 pid: pid,
                                 btn: "SAVE",
@@ -149,10 +151,10 @@ Centauri.Component.Page = function() {
 
                 Centauri.Utility.Loader.show("maincontent");
 
-                $("#pages li[data-pid='" + pid + "']").trigger("click");
+                $("#pages li[data-uid='" + uid + "']").trigger("click");
 
                 var uid = 0;
-                var index = $btn.data("index");
+                var lid = $maincontent.find("input#language").parent().find("[type='hidden']").val();
 
                 $contentelements = $pagedetail.find(".contentelement");
                 $contentelements.each(function() {
@@ -192,23 +194,22 @@ Centauri.Component.Page = function() {
                     fields.push(tempField);
                 });
 
-                $("#modal-newelement").modal("hide");
-
-                Centauri.Utility.Ajax("Pagebutton", {
+                Centauri.Utility.Ajax(Centauri.Utility.URL("get").ajax + "Pagebutton", {
                     _token: Centauri.token,
                     pid: pid,
-                    uid: uid,
+                    lid: lid,
                     btn: "SAVE_NEW_ELEMENT",
 
                     fields: fields,
-                    ctype: ctype,
-                    index: index
+                    ctype: ctype
                 }, function(data) {
                     $("body").append(data);
                     Centauri.Utility.Loader.hide("maincontent");
 
-                    $("html").removeClass("modal-newelement");
-                    $("#modal-newelement").remove();
+                    $("#modal-newelement").modal("hide");
+
+                    var uid = $pagedetail.data("uid");
+                    $("#pages li[data-uid='" + uid + "']").trigger("click");
 
                     Centauri.Component.Page.registeredAjaxs[ajaxBtnData] = false;
                 });

@@ -22,11 +22,16 @@ class DatasaverUtility {
 
         if($type == "elements") {
             $page = $data["page"];
-            if(is_null($page)) return;
+
+            if(is_null($page)) {
+                return;
+            }
 
             $jsonObj = json_decode(file_get_contents($uri . "/CentauriCMS/Datasaver/json/$type.json"), $returnArray);
 
-            if(!isset($data["pid"]) || !isset($jsonObj[$data["pid"]])) return NULL;
+            if(!isset($data["pid"]) || !isset($jsonObj[$data["pid"]])) {
+                return NULL;
+            }
 
             $elements = $jsonObj[$data["pid"]];
             foreach($elements as $uid => $elementArray) {
@@ -57,7 +62,10 @@ class DatasaverUtility {
      * @return null|array|json
      */
     public function findByType($type = NULL, $data = [], $returnArray = true) {
-        if(is_null($type)) return NULL;
+        if(is_null($type)) {
+            return NULL;
+        }
+
         return $this->findDatasaverJson($type, $data, $returnArray);
     }
 }

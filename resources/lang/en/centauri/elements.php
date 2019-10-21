@@ -1,6 +1,6 @@
 <?php
 
 return [
-    "header" => "Teasing Headers",
+    "headerteaserimage" => "Teaser Image with Headers",
     "textimage" => "Text with Image"
 ];

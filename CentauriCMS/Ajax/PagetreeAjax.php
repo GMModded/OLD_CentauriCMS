@@ -2,13 +2,11 @@
 
 namespace CentauriCMS\Centauri\Ajax;
 
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 
 class PagetreeAjax {
     public function Pagetree() {
-        $datasaverUtility = new \CentauriCMS\Centauri\Utility\DatasaverUtility;
-        $pages = $datasaverUtility->findByType("pages");
+        $pages = DB::table("pages")->select("*")->get("items");
 
         return view("Backend.Templates.Utility.pagetree", [
             "pages" => $pages

@@ -2,21 +2,21 @@
 
 namespace CentauriCMS\Centauri\Ajax;
 
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Session;
+use \Illuminate\Support\Facades\DB;
 
 class PagebuttonAjax {
     public function Pagebutton() {
         $request = Request();
 
         $sessionToken = $request->session()->get("_token");
+        $uid = $request->input("uid");
         $pid = $request->input("pid");
 
         $pageComponent = new \CentauriCMS\Centauri\Component\PageComponent;
-        $page = $pageComponent->findByPid($pid);
-        $pageDatasArr = $pageComponent->getPageDatas($page, $pid);
+        $elementComponent = new \CentauriCMS\Centauri\Component\ElementComponent;
 
-        $datasaverUtility = new \CentauriCMS\Centauri\Utility\DatasaverUtility;
+        $page = $pageComponent->findByPid($pid);
+
         $toastUtility = new \CentauriCMS\Centauri\Utility\ToastUtility;
 
         $btn = $request->input("btn");
@@ -26,58 +26,38 @@ class PagebuttonAjax {
             $cfConfig = (include __DIR__ . "/../Datasaver/CFConfig.php");
 
             $config = $cfConfig["config"];
-            $cfConfigPalettes = $cfConfig["palettes"];
 
-            $elements = $datasaverUtility->findByType("elements", [
-                "page" => $page,
-                "pid" => $pid
-            ]);
-
-            foreach($elements as $uid => $element) {
-                foreach($element["fields"] as $ctype => $value) {
-                    $palettesFields = $cfConfigPalettes[$element["ctype"]];
-
-                    foreach($palettesFields as $key => $ctypeField) {
-                        if($palettesFields[$key] == $ctypeField && isset($element["fields"][$ctypeField])) {
-                            $cfg = $config[$ctypeField];
-
-                            foreach($cfg as $cfgKey => $cfgVal) {
-                                if($cfgKey == "html") {
-                                    $html = $cfg["html"];
-
-                                    $value = $element["fields"][$ctypeField];
-                                    $name = $ctypeField;
-
-                                    $html = str_replace("{NAME}", $name, $html);
-                                    $html = str_replace("{VALUE}", "", $html);
-
-                                    $palettesFields[$ctypeField][$cfgKey] = $html;
-                                } else {
-                                    $palettesFields[$ctypeField][$cfgKey] = $cfgVal;
-                                }
-                            }
-                        }
-
-                        unset($palettesFields[$key]);
-                    }
-                }
-
-                $cfConfigPalettes[$element["ctype"]] = $palettesFields;
-                $cfConfigPalettes[$element["ctype"]]["uid"] = (int) $uid;
-            }
-
+            $palettes = $cfConfig["palettes"];
             $tabs = $cfConfig["tabs"];
+
+            $nPalettes = [];
+            $nTabs = [];
+
+            $elements = $elementComponent->findByPid($pid);
+
+            foreach($palettes as $CType => $palette) {
+                foreach($palette as $key => $field) {
+                    $cfg = $config[$field];
+
+                    $html = $cfg["html"] ?? "";
+
+                    $html = str_replace("{NAME}", $field, $html);
+                    $html = str_replace("{VALUE}", "", $html);
+
+                    $cfg["html"] = $html;
+                    $nPalettes[$CType]["configs"][$field] = $cfg;
+                }
+            }
 
             foreach($tabs as $tab => $palettes) {
                 foreach($palettes as $key => $palette) {
-                    unset($tabs[$tab][$key]);
-                    $tabs[$tab][$palette] = $cfConfigPalettes[$palette];
+                    $nTabs[$tab][$palette] = $nPalettes[$palette];
                 }
             }
 
             return view("Backend.Templates.Utility.newelement", [
                 "page" => $page,
-                "tabs" => $tabs,
+                "tabs" => $nTabs,
 
                 "data" => [
                     "token" => $sessionToken
@@ -95,27 +75,19 @@ class PagebuttonAjax {
 
             // Conditions which save-type has been requested
             if($type == "PAGE") {
-                // Page datas
                 $pageDatas = $request->input("page");
-                $pageSaved = $this->savePage($page, $pid, $pageDatas);
+                $pageSaved = $this->savePage($page, $pageDatas);
             }
-
             if($type == "CONTENT_ELEMENTS") {
-                // Content Element datas
                 $elementDatas = $request->input("element");
+
                 $uid = $elementDatas["uid"];
                 $value = $elementDatas["value"];
                 $field = $elementDatas["field"];
 
-                $elements = $datasaverUtility->findByType("elements", [
-                    "page" => $page,
-                    "pid" => $pid
-                ]);
-
                 // Only saving when $field & $value ain't null
                 if(!is_null($field) && !is_null($value)) {
-                    // Saving all content elements inside of elements.json
-                    $elementsSaved = $this->saveElements($pid, $uid, $field, $value, $elements);
+                    $elementsSaved = $this->saveElements($pid, $uid, $field, $value);
                 }
             }
 
@@ -124,128 +96,115 @@ class PagebuttonAjax {
             } else if($elementsSaved) {
                 return $toastUtility->render("Saved", "Elements has been saved");
             } else {
-                return $toastUtility->render("Error", "Something went wrong while saving!", "error");
+                // return $toastUtility->render("Error", "Something went wrong while saving!", "error");
             }
         }
 
-        if($btn == "DELETE") {
+        if($btn == "DELETE_PAGE") {
+            dd("NOOOO");
+        }
 
+        if($btn == "TOGGLE_HIDDEN") {
+            $toastText = "hidden";
+            $element = $elementComponent->findByUid($uid);
+
+            if($element->hidden) {
+                $element->hidden = false;
+                $toastText = "visible";
+            } else {
+                $element->hidden = true;
+            }
+
+            $elementComponent->saveElementByElement($element);
+            return $toastUtility->render("Saved", "Element is now $toastText");
+        }
+
+        if($btn == "DELETE_ELEMENT") {
+            $elementComponent->removeByUid($uid);
+            return $toastUtility->render("Deleted", "Element has been deleted");
         }
 
         if($btn == "SAVE_NEW_ELEMENT") {
-            $elementsSaved = false;
-
-            $elements = $datasaverUtility->findByType("elements", [
-                "page" => $page,
-                "pid" => $pid
-            ]);
+            $elements = $elementComponent->findByPid($pid);
 
             $pid = $request->input("pid");
-            $uid = $request->input("uid") + 1;
+            $lid = $request->input("lid");
 
-            $index = $request->input("index");
             $GETfields = $request->input("fields");
-            $ctype = $request->input("ctype");
+            $CType = $request->input("ctype");
 
-            $fields = [];
-            foreach($GETfields as $key => $data) {
-                $field = $data["field"];
-                $value = $data["value"];
-                $fields[$field] = $value;
-            }
+            $dbColumns = DB::getSchemaBuilder()->getColumnListing("elements");
 
-            $nElement = [
-                "ctype" => $ctype,
-                "fields" => $fields
+            $fields = [
+                "pid" => $pid,
+                "lid" => $lid,
+                "CType" => $CType,
+                "hidden" => 0,
+                "colPos" => 0
             ];
 
-            $nElements = [];
+            foreach($GETfields as $item) {
+                $field = $item["field"];
+                $value = $item["value"];
 
-            $elementsCount = sizeof($elements);
-            if($index > $elementsCount) {
-                $nElements = $elements;
-                $nElements[] = $nElement;
-            } else {
-                foreach($elements as $key => $element) {
-                    if($key == $index) {
-                        if(!isset($elements[$key])) $nElements[$key] = $nElement;
-                    } else {
-                        if(!isset($nElements[$index])) $nElements[$index] = $nElement;
-                    }
-
-                    if(isset($nElements[$key])) $key++;
-                    if(!isset($nElements[$key])) $nElements[$key] = $element;
+                if(!is_null($field) && !is_null($value)) {
+                    $fields[$field] = $value;
                 }
             }
 
-            ksort($nElements);
+            $ignoredColumns = [
+                "uid"
+            ];
 
-            foreach($nElements as $key => $element) {
-                $fields = $element["fields"];
-                
-                foreach($fields as $field => $value) {
-                    $elementsSaved = $this->saveElements($pid, $uid, $field, $value, $nElements);
+            foreach($dbColumns as $key => $column) {
+                if(!isset($fields[$column]) && !in_array($column, $ignoredColumns)) {
+                    $fields[$column] = 0;
                 }
             }
 
-            if($elementsSaved) {
-                return $toastUtility->render("Saved", "Elements has been saved");
-            } else {
-                return $toastUtility->render("Error", "Something went wrong while saving!", "error");
-            }
+            DB::table("elements")->insert($fields);
+            return $toastUtility->render("Saved", "Element has been created");
         }
     }
 
     /**
-     * Core function for saving page datas
+     * Core function for saving page fields
      */
-    public function savePage($page, $pid, $pageDatas) {
-        $page["name"] = $pageDatas["title"];
-
-        $urlmask = "";
-        if(strpos($pageDatas["urlmask"], ",") !== false) {
-            $urlmask = explode(",", $pageDatas["urlmask"]);
-
-            foreach($urlmask as $key => $value) {
-                $urlmask[$key] = trim($value);
-            }
-        } else {
-            $urlmask = $pageDatas["urlmask"];
+    public function savePage($page, $pageDatas) {
+        foreach($pageDatas as $field => $value) {
+            DB::table("pages")
+                ->where([
+                    "pid" => $page->pid
+                ])
+                ->update([
+                    $field => $value
+                ]);
         }
-        $page["urlmask"] = $urlmask;
 
-        $pathsUtility = new \CentauriCMS\Centauri\Utility\PathsUtility;
-        $uri = $pathsUtility->rootPath();
-
-        $json = json_decode(file_get_contents($uri . "/CentauriCMS/Datasaver/json/pages.json"), true);
-        $json[$pid] = array_replace($json[$pid], $page);
-
-        try {
-            file_put_contents(__DIR__ . "/../Datasaver/json/pages.json", json_encode($json, JSON_PRETTY_PRINT));
-            return true;
-        } catch(Exception $e) {
-            return false;
-        }
+        return true;
     }
 
     /**
      * Core function for saving content elements
+     * 
+     * @param int $pid Page ID
+     * @param int $uid Element ID
+     * @param string $field CType
+     * @param string $value New value of the element
+     * @param array $elements Elements getted using ElementComponent findByUid/-Pid
+     * 
+     * @return void
      */
-    public function saveElements($pid, $uid, $field, $value, $elements) {
-        $newElements = $elements;
-        $newElements[$uid]["fields"][$field] = $value;
+    public function saveElements($pid, $uid, $field, $value) {
+        DB::table("elements")
+            ->where([
+                "uid" => $uid,
+                "pid" => $pid
+            ])
+            ->update([
+                $field => $value
+            ]);
 
-        $pathsUtility = new \CentauriCMS\Centauri\Utility\PathsUtility;
-        $uri = $pathsUtility->rootPath();
-
-        $json = json_decode(file_get_contents($uri . "/CentauriCMS/Datasaver/json/elements.json"), true);
-        $json[$pid] = array_replace($json[$pid], $newElements);
-
-        try {
-            file_put_contents(__DIR__ . "/../Datasaver/json/elements.json", json_encode($json, JSON_FORCE_OBJECT|JSON_PRETTY_PRINT));
-            return true;
-        } catch(Exception $e) {
-            return false;
-        }
+        return true;
     }
 }

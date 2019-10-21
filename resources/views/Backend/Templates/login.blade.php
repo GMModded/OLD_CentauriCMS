@@ -40,11 +40,20 @@
                                 </div>
 
                                 <div class="bottom mt-4 d-flex">
-                                    <div class="col-8 p-0 input-group centauri-dropdown">
-                                        <input type="text" class="form-control" id="language" name="language" value>
+                                    <div class="col-8 p-0 input-group centauri-dropdown mr-3">
+                                        <input type="hidden" name="language" value>
+                                        <input type="text" class="form-control" id="language" name="languagelabel" value>
 
                                         <div class="icon-view">
                                             <i class="fa fa-language fa-lg fa-fw"></i>
+                                        </div>
+
+                                        <div class="menu-view w-100">
+                                            @foreach($data["languages"] as $language)
+                                                <div class="item" data-value="{{ $language->uid }}">
+                                                    {{ $language->title }}
+                                                </div>
+                                            @endforeach
                                         </div>
                                     </div>
 
@@ -66,8 +75,8 @@
                 {{ \CentauriCMS\Centauri\Utility\ToastUtility::show(
                     true,
 
-                    app("translator")->getFromJson("centauri/messages.error.failed.login.title"),
-                    app("translator")->getFromJson("centauri/messages.error.failed.login.description"),
+                    app("translator")->get("centauri/messages.error.failed.login.title"),
+                    app("translator")->get("centauri/messages.error.failed.login.description"),
 
                     "error"
                 )}}

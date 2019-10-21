@@ -41,3 +41,17 @@
         background: transparent;
     }
 }
+
+.page-detail {
+    .input-group {
+        &.centauri-dropdown {
+            margin-bottom: 15px;
+        }
+
+        input {
+            &:focus {
+                border: 1px solid $white !important;
+            }
+        }
+    }
+}

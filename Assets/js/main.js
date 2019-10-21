@@ -7,6 +7,7 @@ var Centauri = {};
     Centauri.Component = {};
     Centauri.Utility = {};
     Centauri.Wizard = {};
+    Centauri.Elements = {};
 
     Centauri.current = {};
     Centauri.current.module = "home";
@@ -24,6 +25,8 @@ $(document).ready(function() {
 
     Centauri.Component.Dashboard();
     Centauri.Component.Pagetree();
+
+    Centauri.Elements.Dropdown();
 
     // $("#maincontent").on("scroll", function(e) {
     //     if(!isScrolling) {

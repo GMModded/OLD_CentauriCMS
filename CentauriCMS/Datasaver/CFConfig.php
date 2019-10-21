@@ -5,6 +5,16 @@
  */
 
 return [
+    "BE" => [
+        "layout" => [
+            "rowCols" => [
+                "0" => "6",
+                "1" => "12",
+                "2" => "4"
+            ]
+        ]
+    ],
+
     "config" => [
         "ce_header" => [
             "label" => "Header",
@@ -29,12 +39,17 @@ return [
 
         "ce_select" => [
             "label" => "Select",
-            "html" => "<select><option value='1'>1</option></select>"
+            "wizard" => "SelectWizard",
+            "items" => [
+                ["Name", "Value"],
+                ["c", "d"]
+            ]
         ]
     ],
 
     "palettes" => [
-        "header" => [
+        "headerteaserimage" => [
+            "ce_image",
             "ce_header",
             "ce_subheader",
             "ce_description"
@@ -50,7 +65,7 @@ return [
 
     "tabs" => [
         "general" => [
-            "header",
+            "headerteaserimage",
             "textimage"
         ],
 
