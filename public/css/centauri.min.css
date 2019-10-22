@@ -7342,8 +7342,6 @@ a {
     #centauricms section#content .row.main-row #maincontent .page-detail .contentelement {
       padding: 15px 15px 20px;
       border: 1px solid #fff; }
-      #centauricms section#content .row.main-row #maincontent .page-detail .contentelement:not(:last-child) {
-        margin-bottom: 15px; }
       #centauricms section#content .row.main-row #maincontent .page-detail .contentelement .top-right {
         position: absolute;
         top: 5px;

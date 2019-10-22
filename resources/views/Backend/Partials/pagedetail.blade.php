@@ -64,32 +64,62 @@
 
     <hr>
 
-    @foreach($backendLayout["rowCols"] as $colPos => $rowCol)
-        <a href="{{ url('ajax/pageedit?_token=' . $data['token'] . '&tool=newelement') }}" class="btn btn-primary px-3 py-2 mb-4 ml-0 waves-effect waves-light" data-ajax="true" data-ajax-btn="newelement" data-index="0">
-            <i class="fas fa-plus"></i>
-        </a>
+    @foreach($backendLayout["rowCols"] as $rowCols)
+        <div class="row">
+            @foreach($rowCols as $colPos => $rowCol)
+                @if(isset($elements[$colPos]) && !empty($elements[$colPos]))
+                    @foreach($elements[$colPos] as $element)
+                        {{ dd($element->fields) }}
 
-        <div class="row" data-colPos="{{ $colPos }}">
-            @foreach($elements[$colPos] as $element)
-                <div class="contentelement col-12">
-                    <h3>
-                        a
-                    </h3>
-                </div>
+                        <div class="contentelement col-{{ $rowCol }}" data-colPos="{{ $colPos }}">
+                            <div class="row top">
+                                <div class="col">
+                                    <strong>
+                                        @lang("centauri/elements.$element->CType")
+                                    </strong>
+                                </div>
+
+                                <div class="top-right">
+                                    <button class="btn btn-info waves-effect" data-toggle="edit">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </button>
+
+                                    <button class="btn btn-warning waves-effect" data-toggle="hidden">
+                                        @if($element->hidden)
+                                            <i class="fas fa-eye-slash"></i>
+                                        @else
+                                            <i class="fas fa-eye"></i>
+                                        @endif
+                                    </button>
+
+                                    <button class="btn btn-danger waves-effect" data-toggle="delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="row bottom" style="display: none;">
+                                @foreach($element->fields as $key => $field)
+                                    <div class="field col-12">
+                                        @if(isset($field["label"]))
+                                            <label>
+                                                {{ $field["label"] }}
+                                            </label>
+                                        @endif
+
+                                        @if(isset($field["html"]))
+                                            <div class="content">
+                                                {!! $field["html"] !!}
+                                            </div>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
             @endforeach
-
-            @if(!$loop->last)
-                <a href="{{ url('ajax/pageedit?_token=' . $data['token'] . '&tool=newelement') }}" class="btn btn-primary px-3 py-2 mb-4 ml-0 waves-effect waves-light" data-ajax="true" data-ajax-btn="newelement" data-index="0">
-                    <i class="fas fa-plus"></i>
-                </a>
-            @endif
         </div>
-
-        @if($loop->last)
-            <a href="{{ url('ajax/pageedit?_token=' . $data['token'] . '&tool=newelement') }}" class="btn btn-primary px-3 py-2 mb-4 ml-0 waves-effect waves-light" data-ajax="true" data-ajax-btn="newelement" data-index="0">
-                <i class="fas fa-plus"></i>
-            </a>
-        @endif
     @endforeach
 
     {{-- @foreach($elements as $element)

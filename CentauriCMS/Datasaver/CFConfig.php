@@ -8,9 +8,11 @@ return [
     "BE" => [
         "layout" => [
             "rowCols" => [
-                "0" => "6",
-                "1" => "12",
-                "2" => "4"
+                // colPos => col-width
+                [
+                    "0" => "4",
+                    "1" => "4"
+                ]
             ]
         ]
     ],
@@ -32,14 +34,14 @@ return [
         ],
 
         "ce_image" => [
-            "label" => "Image",
             "wizard" => "ImageWizard",
+            "label" => "Image",
             "html" => "<img name='{NAME}' class='img-fluid' src='{VALUE}' style='max-width: 150px;' />"
         ],
 
         "ce_select" => [
-            "label" => "Select",
             "wizard" => "SelectWizard",
+            "label" => "Select",
             "items" => [
                 ["Name", "Value"],
                 ["c", "d"]
@@ -49,7 +51,7 @@ return [
 
     "palettes" => [
         "headerteaserimage" => [
-            "ce_image",
+            "ce_select",
             "ce_header",
             "ce_subheader",
             "ce_description"

@@ -5,6 +5,16 @@ namespace CentauriCMS\Centauri\Component;
 use \Illuminate\Support\Facades\DB;
 
 class ElementComponent {
+    public $defaultTableColumns = [
+        "uid",
+        "pid",
+        "lid",
+        "hidden",
+        "CType",
+        "position",
+        "colPos"
+    ];
+
     public function findByPid($pid) {
         $elements = DB::table("elements")
             ->select("*")
