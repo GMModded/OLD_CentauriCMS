@@ -36,11 +36,13 @@ class PagedetailAjax {
             $CFConfig = (include __DIR__ . "/../Datasaver/CFConfig.php");
 
             $config = $CFConfig["config"];
+
             $backendLayout = $CFConfig["BE"]["layout"];
+            $colPositions = $backendLayout["rowCols"];
 
             $elements = collect();
 
-            foreach($backendLayout["rowCols"] as $rowCols) {
+            foreach($colPositions as $rowCols) {
                 foreach($rowCols as $colPos => $rowCol) {
                     $elements->$colPos = $elementComponent->findBy(
                         $page->pid,
@@ -60,49 +62,55 @@ class PagedetailAjax {
 
             $defaultCols = $elementComponent->defaultTableColumns;
 
-            foreach($elements as $key => $element) {
-                foreach($element as $data) {
-                    foreach($defaultCols as $defaultCol) {
-                        if(isset($data->$defaultCol)) {
-                            unset($data->$defaultCol);
-                        }
-                    }
+            foreach($colPositions as $rowCols) {
+                foreach($rowCols as $colPos => $rowCol) {
+                    $elementsArr = $elements->$colPos;
+                    
+                    foreach($elementsArr as $element) {
+                        $data = (array) $element;
 
-                    foreach($data as $field => $value) {
-                        $cfg = $config[$field];
-                        $html = $cfg["html"] ?? "";
-
-                        $wizard = $cfg["wizard"] ?? null;
-
-                        if($wizard == "SelectWizard") {
-                            $items = $cfg["items"];
-                            $html = "";
-
-                            foreach($items as $key => $item) {
-                                $label = $items[$key][0];
-                                $value = $items[$key][1];
-
-                                if($key == 0) {
-                                    $html = "<option value='" . $value. "' selected>" . $label . "</option>";
-                                } else {
-                                    $html = "<option value='" . $value . "'>" . $label . "</option>";
-                                }
+                        foreach($defaultCols as $defaultCol) {
+                            if(isset($data->$defaultCol)) {
+                                unset($data->$defaultCol);
                             }
-
-                            $html = "<select>". $html . "</select>";
                         }
 
-                        $html = str_replace("{NAME}", $field, $html);
-                        $html = str_replace("{VALUE}", $html, $html);
+                        foreach($data as $field => $value) {
+                            $cfg = $config[$field] ?? null;
 
-                        $cfg["html"] = $html;
+                            if(!is_null($cfg)) {
+                                $html = $cfg["html"] ?? "";
+                                $wizard = $cfg["wizard"] ?? null;
 
-                        $element->put("fields", $cfg);
+                                if($wizard == "SelectWizard") {
+                                    $items = $cfg["items"];
+                                    $html = "";
+
+                                    foreach($items as $key => $item) {
+                                        $label = $items[$key][0];
+                                        $value = $items[$key][1];
+
+                                        if($key == 0) {
+                                            $html .= "<option value='" . $value. "' selected>" . $label . "</option>";
+                                        } else {
+                                            $html .= "<option value='" . $value . "'>" . $label . "</option>";
+                                        }
+                                    }
+
+                                    $html = "<select>". $html . "</select>";
+                                }
+
+                                $html = str_replace("{NAME}", $field, $html);
+                                $html = str_replace("{VALUE}", $html, $html);
+
+                                $cfg["html"] = $html;
+
+                                $element->fields = [$field => $cfg];
+                            }
+                        }
                     }
                 }
             }
-
-            dd($elements);
 
             return view("Backend.Partials.pagedetail", [
                 "backendLayout" => $backendLayout,
