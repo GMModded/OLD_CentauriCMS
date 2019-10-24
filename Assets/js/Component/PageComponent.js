@@ -116,6 +116,16 @@ Centauri.Component.Page = function() {
                             value = $field.find(".ck-content").html();
                         }
 
+                        if($field.find("img").length) {
+                            field = $field.find("select").attr("name");
+                            value = $field.find("select").val();
+                        }
+
+                        if($field.find("select").length) {
+                            field = $field.find("select").attr("name");
+                            value = $field.find("select").val();
+                        }
+
                         if(typeof field == "string" && typeof value == "string") {
                             // AJAX-call to save every content element inside a foreach
                             Centauri.Utility.Ajax(Centauri.Utility.URL("get").ajax + "Pagebutton", {
@@ -130,6 +140,14 @@ Centauri.Component.Page = function() {
                                     value: value
                                 }
                             }, function(data) {
+                                if(typeof Centauri.Hooks.SaveFieldsByFieldHook == "function") {
+                                    Centauri.Hooks.SaveFieldsByFieldHook({
+                                        uid: uid,
+                                        field: field,
+                                        value: value
+                                    });
+                                }
+
                                 if(!elementsSaved) {
                                     elementsSaved = true;
                                     $("body").append(data);

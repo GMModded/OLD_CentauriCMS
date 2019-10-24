@@ -2,6 +2,9 @@
 
 namespace CentauriCMS\Centauri\Ajax;
 
+use CentauriCMS\Centauri\Helper\HookHelper;
+use CentauriCMS\Centauri\Service\WizardService;
+
 class PagedetailAjax {
     public function Pagedetail() {
         $request = Request();
@@ -15,6 +18,7 @@ class PagedetailAjax {
         $pageComponent = new \CentauriCMS\Centauri\Component\PageComponent;
         $elementComponent = new \CentauriCMS\Centauri\Component\ElementComponent;
         $languageComponent = new \CentauriCMS\Centauri\Component\LanguageComponent;
+        $fileComponent = new \CentauriCMS\Centauri\Component\FileComponent;
 
         $page = $pageComponent->findByUid($uid);
         $elements = $elementComponent->findByPid($page->pid);
@@ -36,6 +40,7 @@ class PagedetailAjax {
             $CFConfig = (include __DIR__ . "/../Datasaver/CFConfig.php");
 
             $config = $CFConfig["config"];
+            $hooks = $GLOBALS["Centauri"]["hooks"];
 
             $backendLayout = $CFConfig["BE"]["layout"];
             $colPositions = $backendLayout["rowCols"];
@@ -61,52 +66,118 @@ class PagedetailAjax {
             }
 
             $defaultCols = $elementComponent->defaultTableColumns;
+            
+            $CFConfigHooks = $hooks["CFConfigElement"] ?? null;
+            $beforeHooks = null;
+            $afterHooks = null;
+
+            if(!is_null($CFConfigHooks)) {
+                $beforeHooks = $CFConfigHooks["before"];
+                $afterHooks = $CFConfigHooks["after"];
+            }
 
             foreach($colPositions as $rowCols) {
                 foreach($rowCols as $colPos => $rowCol) {
                     $elementsArr = $elements->$colPos;
                     
                     foreach($elementsArr as $element) {
-                        $data = (array) $element;
+                        $fields = (array) $element;
 
                         foreach($defaultCols as $defaultCol) {
-                            if(isset($data->$defaultCol)) {
-                                unset($data->$defaultCol);
+                            if(isset($fields[$defaultCol])) {
+                                unset($fields[$defaultCol]);
                             }
                         }
 
-                        foreach($data as $field => $value) {
-                            $cfg = $config[$field] ?? null;
+                        foreach($fields as $field => $value) {
+                            $cfg = isset($config[$field]) ? $config[$field] : null;
 
                             if(!is_null($cfg)) {
                                 $html = $cfg["html"] ?? "";
+                                $originHtml = $html;
+
                                 $wizard = $cfg["wizard"] ?? null;
 
-                                if($wizard == "SelectWizard") {
-                                    $items = $cfg["items"];
-                                    $html = "";
+                                if(!is_null($beforeHooks)) {
+                                    $wizardHook = $beforeHooks["Wizard"] ?? null;
 
-                                    foreach($items as $key => $item) {
-                                        $label = $items[$key][0];
-                                        $value = $items[$key][1];
+                                    if(!is_null($wizardHook)) {
+                                        $newData = HookHelper::callHook($wizardHook, [
+                                            "uid" => $uid,
+                                            "fields" => $fields,
+                                            "field" => $field,
+                                            "value" => $value,
+                                            "config" => $cfg,
+                                            "html" => $originHtml
+                                        ]);
 
-                                        if($key == 0) {
-                                            $html .= "<option value='" . $value. "' selected>" . $label . "</option>";
-                                        } else {
-                                            $html .= "<option value='" . $value . "'>" . $label . "</option>";
+                                        $field = $newData["field"];
+                                        $value = $newData["value"];
+                                        $cfg = $newData["config"];
+
+                                        $html = $newData["html"];
+                                        if($html !== $originHtml) {
+                                            $cfg["html"] = $html;
                                         }
+
+                                        $fields[$field] = $cfg;
+                                    }
+                                }
+
+                                if(!is_null($wizard)) {
+                                    $currentValue = $element->$field;
+                                    $additionalData = [];
+
+                                    if($wizard == "SelectWizard") {
+                                        $additionalData["items"] = $cfg["items"];
                                     }
 
-                                    $html = "<select>". $html . "</select>";
+                                    $data = [
+                                        "html" => $html,
+                                        "currentValue" => $currentValue,
+                                        "value" => $value,
+                                        "field" => $field
+                                    ];
+
+                                    $wizardServiceData = WizardService::update($wizard, $data, $additionalData);
+                                    $html = $wizardServiceData["html"];
+                                } else {
+                                    $html = str_replace("{VALUE}", $element->$field, $html);
                                 }
 
                                 $html = str_replace("{NAME}", $field, $html);
-                                $html = str_replace("{VALUE}", $html, $html);
 
                                 $cfg["html"] = $html;
-
-                                $element->fields = [$field => $cfg];
+                                $fields[$field] = $cfg;
                             }
+
+                            if(!is_null($afterHooks)) {
+                                $wizardHook = $afterHooks["Wizard"] ?? null;
+
+                                if(!is_null($wizardHook)) {
+                                    $newData = HookHelper::callHook($wizardHook, [
+                                        "uid" => $uid,
+                                        "fields" => $fields,
+                                        "field" => $field,
+                                        "value" => $value,
+                                        "config" => $cfg,
+                                        "html" => $originHtml
+                                    ]);
+
+                                    $field = $newData["field"];
+                                    $value = $newData["value"];
+                                    $cfg = $newData["config"];
+
+                                    $html = $newData["html"];
+                                    if($html !== $originHtml) {
+                                        $cfg["html"] = $html;
+                                    }
+
+                                    $fields[$field] = $cfg;
+                                }
+                            }
+
+                            $element->fields = $fields;
                         }
                     }
                 }

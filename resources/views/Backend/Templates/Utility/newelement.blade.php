@@ -1,4 +1,4 @@
-{{-- {{ dd(get_defined_vars()["__data"]) }} --}}
+{{ dd(get_defined_vars()["__data"]) }}
 
 <div id="modal-newelement" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg cascading-modal" role="document">

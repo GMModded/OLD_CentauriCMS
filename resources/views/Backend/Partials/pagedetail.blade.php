@@ -66,15 +66,19 @@
         <div class="row mt-3">
             @foreach($rowCols as $colPos => $rowCol)
                 <div class="col-{{ $rowCol }}">
+                    @php $position = 0; @endphp
+
                     @if(count($elements->$colPos) != 0)
                         @foreach($elements->$colPos as $element)
-                            @if($loop->first)
-                                <a href="{{ url('ajax/pageedit?_token=' . $data['token'] . '&tool=newelement') }}" class="btn btn-primary px-3 py-2 mb-4 ml-0 waves-effect waves-light" data-ajax="true" data-ajax-btn="newelement" data-index="{{ $loop->iteration }}">
-                                    <i class="fas fa-plus"></i>
-                                </a>
-                            @endif
+                            @php
+                                $position = $element->position;
+                            @endphp
 
-                            <div class="contentelement w-100 position-relative" data-colPos="{{ $colPos }}">
+                            <a href="{{ url('ajax/pageedit?_token=' . $data['token'] . '&tool=newelement&colPos=' . $colPos . '&position=' . $position . '') }}" class="btn btn-primary px-3 py-2 mb-4 ml-0 waves-effect waves-light" data-ajax="true" data-ajax-btn="newelement" data-index="{{ $loop->iteration }}">
+                                <i class="fas fa-plus"></i>
+                            </a>
+
+                            <div class="contentelement w-100 position-relative{{ !$loop->last ? ' mb-3' : '' }}" data-uid="{{ $element->uid }}" data-colPos="{{ $colPos }}">
                                 <div class="row top">
                                     <div class="col">
                                         <p class="title m-0">
@@ -106,32 +110,38 @@
                                         </button>
                                     </div>
 
-                                    @foreach($element->fields as $key => $field)
-                                        <div class="field col-12">
-                                            @if(isset($field["label"]))
-                                                <label class="m-0">
-                                                    {{ $field["label"] }}
-                                                </label>
-                                            @endif
+                                    @if(!is_null($element->fields))
+                                        @foreach($element->fields as $key => $field)
+                                            <div class="field col-12">
+                                                @if(isset($field["label"]))
+                                                    <label class="m-0">
+                                                        {{ $field["label"] }}
+                                                    </label>
+                                                @endif
 
-                                            @if(isset($field["html"]))
-                                                <div class="content">
-                                                    {!! $field["html"] !!}
-                                                </div>
-                                            @endif
-                                        </div>
-                                    @endforeach
+                                                @if(isset($field["html"]))
+                                                    <div class="content">
+                                                        {!! $field["html"] !!}
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        @endforeach
+                                    @endif
                                 </div>
                             </div>
 
                             @if($loop->last)
-                                <a href="{{ url('ajax/pageedit?_token=' . $data['token'] . '&tool=newelement') }}" class="btn btn-primary px-3 py-2 mt-4 ml-0 waves-effect waves-light" data-ajax="true" data-ajax-btn="newelement" data-index="{{ $loop->iteration }}">
+                                @php
+                                    $position++;
+                                @endphp
+
+                                <a href="{{ url('ajax/pageedit?_token=' . $data['token'] . '&tool=newelement&colPos=' . $colPos . '&position=' . $position . '') }}" class="btn btn-primary px-3 py-2 mt-4 ml-0 waves-effect waves-light" data-ajax="true" data-ajax-btn="newelement" data-index="{{ $loop->iteration }}">
                                     <i class="fas fa-plus"></i>
                                 </a>
                             @endif
                         @endforeach
                     @else
-                        <a href="{{ url('ajax/pageedit?_token=' . $data['token'] . '&tool=newelement') }}" class="btn btn-primary px-3 py-2 mb-4 ml-0 waves-effect waves-light" data-ajax="true" data-ajax-btn="newelement" data-index="{{ $loop->iteration }}">
+                        <a href="{{ url('ajax/pageedit?_token=' . $data['token'] . '&tool=newelement&colPos=' . $colPos . '&position=' . $position .  '') }}" class="btn btn-primary px-3 py-2 mb-4 ml-0 waves-effect waves-light" data-ajax="true" data-ajax-btn="newelement" data-index="{{ $loop->iteration }}">
                             <i class="fas fa-plus"></i>
                         </a>
                     @endif

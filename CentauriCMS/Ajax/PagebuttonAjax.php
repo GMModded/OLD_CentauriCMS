@@ -25,15 +25,14 @@ class PagebuttonAjax {
         if($btn == "NEW_ELEMENT") {
             $cfConfig = (include __DIR__ . "/../Datasaver/CFConfig.php");
 
-            $config = $cfConfig["config"];
+            dd($request->all());
 
+            $config = $cfConfig["config"];
             $palettes = $cfConfig["palettes"];
             $tabs = $cfConfig["tabs"];
 
             $nPalettes = [];
             $nTabs = [];
-
-            $elements = $elementComponent->findByPid($pid);
 
             foreach($palettes as $CType => $palette) {
                 foreach($palette as $key => $field) {

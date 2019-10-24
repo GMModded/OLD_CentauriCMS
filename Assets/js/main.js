@@ -8,6 +8,7 @@ var Centauri = {};
     Centauri.Utility = {};
     Centauri.Wizard = {};
     Centauri.Elements = {};
+    Centauri.Hooks = {};
 
     Centauri.current = {};
     Centauri.current.module = "home";
@@ -41,5 +42,9 @@ $(document).ready(function() {
     //                 }
     //         }, 1);
     //     }
+    // });
+
+    // Centauri.Hooks.SaveFieldsByFieldHook(function() {
+    //     console.log("saved a field!");
     // });
 });
