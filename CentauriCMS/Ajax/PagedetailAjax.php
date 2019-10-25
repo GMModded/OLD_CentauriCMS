@@ -120,6 +120,7 @@ class PagedetailAjax {
                                             $cfg["html"] = $html;
                                         }
 
+                                        $cfg["additional"] = $newData["additional"] ?? null;
                                         $fields[$field] = $cfg;
                                     }
                                 }
@@ -146,6 +147,7 @@ class PagedetailAjax {
                                 }
 
                                 $html = str_replace("{NAME}", $field, $html);
+                                $html = str_replace("{UID}", $element->uid, $html);
 
                                 $cfg["html"] = $html;
                                 $fields[$field] = $cfg;

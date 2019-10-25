@@ -7171,6 +7171,9 @@ a {
 .page-detail .input-group input:focus {
   border: 1px solid #fff !important; }
 
+.cropper-container {
+  margin: 0 auto; }
+
 #centauricms {
   height: 100vh;
   background-image: url(/resources/fileadmin/mountains-bg.jpg);

@@ -40,6 +40,7 @@ Centauri.Component.Pagetree = function(cb) {
                         // Initializing Centauri's components (e.g. page functionalities or elements etc.)
                         Centauri.Component.Page();
                         Centauri.Component.Elements();
+                        Centauri.Component.ImageCropper();
 
                         if(typeof cb == "function") {
                             cb();

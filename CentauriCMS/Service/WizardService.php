@@ -22,9 +22,14 @@ class WizardService {
                 $file = $fileComponent->findByUid($uid);
                 
                 $val = $file->source;
+
                 $html = str_replace("{VALUE}", $val, $html);
                 $tempHtml = $html;
                 $html = "<div class='image-cropper'>$tempHtml</div>";
+                $html = str_replace("{IMAGE_UID}", $uid, $html);
+
+                $size = \getimagesize($file->source);
+                $html = str_replace("{IMAGE_SIZE}", $size[3], $html);
             } else {
                 $html = "<div class='upload-image'><button>upload image</button></div>";
             }

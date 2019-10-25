@@ -10,8 +10,7 @@ return [
             "rowCols" => [
                 // colPos => col-width
                 [
-                    "0" => "6",
-                    "1" => "6"
+                    "0" => "12"
                 ]
             ]
         ]
@@ -36,7 +35,7 @@ return [
         "ce_image" => [
             "wizard" => "ImageWizard",
             "label" => "Image",
-            "html" => "<img name='{NAME}' class='img-fluid' src='{VALUE}' style='max-width: 150px;' />"
+            "html" => "<img name='{NAME}' class='img-fluid' src='{VALUE}' id='{NAME}-{UID}' data-uid='{IMAGE_UID}' {IMAGE_SIZE} style='max-width: 150px;' />"
         ],
 
         "ce_select" => [
